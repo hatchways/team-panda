@@ -1,4 +1,5 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
+import Sequelize from 'sequelize';
+
 const sequelize = new Sequelize(
     process.env.DATABASE,
     process.env.DB_USER,
@@ -11,7 +12,11 @@ const sequelize = new Sequelize(
 )
 
 const models = {
-  User: sequelize.import('./user')
+  User: sequelize.import('./user'),
+  Pet: sequelize.import('./pet'),
+  UserProfile: sequelize.import('./userProfile'),
+  Post: sequelize.import('./post'),
+  Followed_pet: sequelize.import("./followed_pet"),
 }
 
 export { sequelize };
