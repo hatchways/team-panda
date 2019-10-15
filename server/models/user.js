@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 const user = (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
     id: {
@@ -19,9 +21,22 @@ const user = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
+    hooks : {
+      afterValidate: (usr, options) => {
+        return hashPass(usr);
+      }
+    },
     timestamps: false
   });
   return User;
+}
+
+
+function hashPass(newUser){
+  return bcrypt.hash(newUser.password, 12)
+  .then((hash) => {
+    newUser.password = hash;
+  });
 }
 
 export default user;
