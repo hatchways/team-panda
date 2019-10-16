@@ -1,17 +1,22 @@
 var express = require("express");
 var router = express.Router();
-import models from '../models';
+const models = require('../models').default;
 
 router.post('/', (req, res) => {
   let newUser = {
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword
   }
   models.User.create(newUser)
     .then((user) => {
-      res.send(`User with email ${user.email} has been created`);
-    }).catch((e)=> {
+      res.status(201).send(`User with email ${user.email} has been created`);
+    })
+    .catch((e)=> {
+      if(e && e.errors){
+        res.status(400).send(e.errors[0].message);
+      }
       res.status(400).send(e);
     });
 });
