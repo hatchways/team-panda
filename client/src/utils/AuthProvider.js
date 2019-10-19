@@ -1,5 +1,4 @@
 import React, {createContext, useState, useContext} from 'react';
-import axios from 'axios';
 import { authLogIn, authSignUp, authLogOut } from './auth';
 
 const AuthContext = createContext();
