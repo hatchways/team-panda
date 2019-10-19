@@ -6,15 +6,27 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 
 import "./App.css";
+import AuthProvider from "./utils/AuthProvider";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
-  return (
-    <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Route path="/" component={LandingPage} />
-      </BrowserRouter>
-    </MuiThemeProvider>
-  );
+    return (
+        <MuiThemeProvider theme={theme}>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Route path="/" component={LandingPage} />
+                    <Route
+                        path="/login"
+                        component={<AuthPage name="login" />}
+                    />
+                    <Route
+                        path="/signup"
+                        component={<AuthPage name="signup" />}
+                    />
+                </BrowserRouter>
+            </AuthProvider>
+        </MuiThemeProvider>
+    );
 }
 
 export default App;
