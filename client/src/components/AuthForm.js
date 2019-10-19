@@ -23,8 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
-export default AuthForm = props => {
+const AuthForm = props => {
     const {name, displayName} = props
     const classes = useStyles();
     const [authForm, setAuthForm] = useState({email: '', password: '', name: '', repeatPassword: '', errors: null});
@@ -44,7 +43,8 @@ export default AuthForm = props => {
     } = useAuth();
 
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault();
         switch(name){
             case 'login':
                 logIn(_.pick(authForm, ['email', 'password']));
@@ -71,9 +71,10 @@ export default AuthForm = props => {
                 className={classes.textField}
                 margin="normal"
                 value = {authForm.name}
-                onChange = {handleChange('email')}
+                onChange = {handleChange('name')}
                 variant = 'outlined'
                 required
+                fullWidth
                 />: ''}
             <TextField
               id="email"
@@ -84,6 +85,7 @@ export default AuthForm = props => {
               onChange = {handleChange('email')}
               required
               variant = 'outlined'
+              fullWidth
             />
           </div>
           <div>
@@ -97,6 +99,7 @@ export default AuthForm = props => {
               onChange = {handleChange('password')}
               required
               variant = 'outlined'
+              fullWidth
             />
             {name === 'signup' ?
              <TextField
@@ -109,6 +112,7 @@ export default AuthForm = props => {
              onChange = {handleChange('repeatPassword')}
              required
              variant = 'outlined'
+             fullWidth
            />: ''}
           </div>
           <div>
@@ -116,11 +120,12 @@ export default AuthForm = props => {
               {name === 'signup'? 'Create': displayName}
             </Button>
           </div>
-          {error && error.response && <div> {error.response.data} </div>}
         </form>
       </div>
     )
 }
+
+export default AuthForm
 
   /**
  * PROP TYPES

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const authLogin = async() => {
+export const authLogIn = async() => {
     //WIP depending on what the login route returns
     const res = await axios.post('/login');
     return res;
