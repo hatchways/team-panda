@@ -4,6 +4,7 @@ const mockery = require('mockery');
 const { match, stub, resetHistory } = require('sinon');
 const { makeMockModels } = require('sequelize-test-helpers');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 var app;
 var User;
@@ -58,6 +59,10 @@ describe("POST /users routes", () => {
         .send(testUser)
         .end((err, res) => {
           res.should.have.status(201);
+          res.body.should.have.property('success')
+          .eql(`User with email jdoe1@email.com has been created`);
+          res.body.should.have.property('token');
+          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.email);
           done();
         });
     });
@@ -144,6 +149,8 @@ describe("POST /users routes", () => {
           res.should.have.status(200);
           res.body.should.have.property('success')
           .eql('User credentials were valid')
+          res.body.should.have.property('token');
+          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.email);          
           done();
         });
     });
