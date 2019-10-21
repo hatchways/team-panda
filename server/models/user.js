@@ -34,7 +34,6 @@ const user = (sequelize, DataTypes) => {
           msg: "Password must be at least 6 characters."
         }
       },
-      scopes: false || [] 
     },
     confirmPassword: {
       type: DataTypes.VIRTUAL,
@@ -46,11 +45,10 @@ const user = (sequelize, DataTypes) => {
           }
         }
       },
-      scopes: false || []
     }
   }, {
     defaultScope: {
-      attributes: {exclude: ['password','currentPassword']}
+      attributes: {exclude: ['currentPassword']}
     },
     hooks : {
       afterValidate: (usr, options) => {
