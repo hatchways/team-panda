@@ -27,13 +27,23 @@ const AuthForm = props => {
     const {name, displayName} = props
     const classes = useStyles();
     const [authForm, setAuthForm] = useState({email: '', password: '', name: '', repeatPassword: '', errors: null});
-    const handleChange = name => event => {
-        setAuthForm({ ...authForm, [name]: event.target.value });
+    const handleChange = elName => event => {
+        if (name === 'signup'){
+            if (elName === 'repeatPassword'){
+                if (authForm.password !== event.target.value){
+                    event.target.setCustomValidity('The passwords you have entered do not match');
+                } else {
+                    event.target.setCustomValidity('');
+                }
+            }
+            else if (elName === 'password' && event.target.value && event.target.value.length < 6){
+                event.target.setCustomValidity('Passwords have to be atleast 6 characters long');
+            } else {
+                event.target.setCustomValidity('');
+            }
+        }
+        setAuthForm({ ...authForm, [elName]: event.target.value });
       };
-
-    const validateForm = () => {
-
-    }
 
     const {
         logIn,
@@ -79,6 +89,7 @@ const AuthForm = props => {
             <TextField
               id="email"
               label="Email"
+              type = 'email'
               className={classes.textField}
               margin="normal"
               value = {authForm.email}
@@ -113,6 +124,7 @@ const AuthForm = props => {
              required
              variant = 'outlined'
              fullWidth
+
            />: ''}
           </div>
           <div>
