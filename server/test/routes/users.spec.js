@@ -29,6 +29,7 @@ describe("POST /users routes", () => {
       mockery.registerMock('../models', mockModule);
       app = require("../../app.js");
       testUser = {
+        "id": 25,
         "email": "jdoe1@email.com",
         "name": "John",
         "password": "pass12",
@@ -47,28 +48,23 @@ describe("POST /users routes", () => {
   describe("POST /users/register", () => {
   
     it("should return the saved user, and return a JWT", (done)=> {
-      User.create.resolves({
-        "email": "jdoe1@email.com",
-        "name": "John",
-        "password": "pass12",
-        "confirmPassword": "pass12"
-      });
+      User.create.resolves(testUser);
       chai
         .request(app)
         .post(`/users/register`)
         .send(testUser)
         .end((err, res) => {
           res.should.have.status(201);
-          res.body.should.have.property('success')
-          .eql(`User with email jdoe1@email.com has been created`);
+          res.body.should.have.property('id').eql(testUser.id);
+          res.body.should.have.property('email').eql(testUser.email);
           res.body.should.have.property('token');
-          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.email);
+          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.id.toString());
           done();
         });
     });
   
     it("should return 400 error if email is invalid", (done)=> {
-      User.create.rejects({errors: [{message: "Email is invalid."}]});
+      User.create.rejects({name: "SequelizeValidationError", errors: [{message: "Email is invalid."}]});
       chai
         .request(app)
         .post(`/users/register`)
@@ -82,7 +78,12 @@ describe("POST /users routes", () => {
     });
   
     it("should return 400 error if email is already taken", (done)=> {
-      User.create.rejects({errors: [{message: "This email is already taken. Please try another one."}]});
+      User.create.rejects({
+        name: 'SequelizeUniqueConstraintError',
+        errors: [{
+          message: "This email is already taken. Please try another one."
+        }]
+      });
       chai
         .request(app)
         .post(`/users/register`)
@@ -96,7 +97,11 @@ describe("POST /users routes", () => {
     });
   
     it("should return 400 error if passwords do not match", (done)=> {
-      User.create.rejects({errors: [{message: "Passwords must match."}]});
+      User.create.rejects({
+        name: 'SequelizeValidationError',
+        errors: [{
+          message: "Passwords must match."}]
+      });
       chai
         .request(app)
         .post(`/users/register`)
@@ -110,7 +115,12 @@ describe("POST /users routes", () => {
     });
   
     it("should return 400 error if password is less than 6 characters", (done)=> {
-      User.create.rejects({errors: [{message: "Password must be at least 6 characters."}]});
+      User.create.rejects({
+        name: 'SequelizeValidationError',
+        errors: [{
+          message: "Password must be at least 6 characters."
+        }]
+      });
       chai
         .request(app)
         .post(`/users/register`)
@@ -127,6 +137,7 @@ describe("POST /users routes", () => {
   
     beforeEach( () => {
       testUser = {
+        "id": 25,
         "email": "jdoe1@email.com",
         "name": "John",
         "password": "pass12",
@@ -136,6 +147,7 @@ describe("POST /users routes", () => {
   
     it ("should return a 200 response when the credentials are valid", (done) => {
       let userFromDB = {
+        "id": 25,
         "email": "jdoe1@email.com",
         // bcrypt hashed password from DB
         "password": bcrypt.hashSync(testUser.password, 4),
@@ -147,10 +159,10 @@ describe("POST /users routes", () => {
         .send(testUser)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property('success')
-          .eql('User credentials were valid')
+          res.body.should.have.property('id').eql(testUser.id);
+          res.body.should.have.property('email').eql(testUser.email);
           res.body.should.have.property('token');
-          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.email);          
+          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.id.toString());          
           done();
         });
     });
