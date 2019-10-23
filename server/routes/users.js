@@ -4,7 +4,7 @@ const models = require('../models').default;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-router.post('/register', (req, res) => {
+router.post('/register', (req, res, next) => {
   let newUser = {
     name: req.body.name,
     email: req.body.email,
@@ -13,41 +13,38 @@ router.post('/register', (req, res) => {
   }
   models.User.create(newUser)
     .then((user) => {
-      res.status(201).send({
-        success: `User with email ${user.email} has been created`,
-        token: jwt.sign(user.email, "tempSecret")
-      });
-    })
-    .catch((e)=> {
-      if(e && e.errors){
-        return res.status(400).send({errorMsg:e.errors[0].message});
-      }
-      res.status(400).send(e);
-    });
+      res.status(201).json(createJWTResponse(user));
+    }).catch(next);
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
   let user_cred = {
     email: req.body.email,
     password: req.body.password,
   }
   models.User.findOne({where: {email: user_cred.email}}).then((user)=> {
-      if (user){
-        bcrypt.compare(user_cred.password,user.password, (err,areEqual) => {
-          if(areEqual){
-            return res.status(200).send({
-              success: 'User credentials were valid',
-              token: jwt.sign(user.email, "tempSecret")
-            });
-          }
-          res.status(401).send({errorMsg: 'Incorrect username/password'});  
-        });
-      }else {
-        res.status(401).send({errorMsg: 'Incorrect username/password'});  
-      }
-    }).catch((err) => {
-      res.status(400).send(err);
-    });
+      return validateLogin(user, user_cred);
+    }).then((user) => {
+      res.status(200).json(createJWTResponse(user));
+    }).catch(next);
 });
 
+function validateLogin(actualUser, givenUser){
+  if (actualUser){
+    return bcrypt.compare(givenUser.password,actualUser.password).then((res) =>{
+      if(res){ return Promise.resolve(actualUser) }
+        return Promise.reject({loginError: 'Incorrect username/password'})  
+    });
+  }else {
+    return Promise.reject({loginError: 'Incorrect username/password'});  
+  }
+}
+
+function createJWTResponse(user){
+  return {
+      "email": user.email,
+      "id": user.id,
+      "token": jwt.sign(user.id, "tempSecret")
+    }
+}
 module.exports = router;
