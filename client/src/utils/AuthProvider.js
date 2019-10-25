@@ -18,28 +18,40 @@ export const useAuth =() => {
 //hook provider that creates auth object and handles user state
 function useProvideAuth(){
     const [user, setUser] = useState(null);
+    const [authError, setAuthError] = useState(null);
 
-    const logIn = async(email, password) => {
-
-        const res = await authLogIn();
-        setUser(res.user);
+    const logIn = async(credentials) => {
+        try {
+            const res = await authLogIn(credentials);
+            setUser(res);
+        } catch (error) {
+            setAuthError(error.response);
+        }
     };
-    const signUp = async(email, password) => {
-
-        const res = await authSignUp();
-        setUser(res.user);
+    const signUp = async(credentials) => {
+        try {
+            const res = await authSignUp(credentials);
+            setUser(res);
+        } catch (error) {
+            setAuthError(error.response);
+        }
     };
-    const signOut = async(email, password) => {
-
-        const res = await authLogOut();
-        setUser(res.user);
+    const signOut = async() => {
+        try {
+            const res = await authLogOut();
+            setUser(res);
+        } catch (error) {
+            setAuthError(error.response);
+        }
     };
 
     return {
         logIn,
         signUp,
         signOut,
-        user
+        user,
+        authError,
+        setAuthError
     }
 }
 
