@@ -29,6 +29,15 @@ router.post('/login', (req, res, next) => {
     }).catch(next);
 });
 
+router.post('/:userId', (req, res, next) => {
+  let userProfile = req.body;
+  userProfile.userId = req.params.userId;
+  models.UserProfile.create(userProfile).then((userProfile) => {
+    res.send(userProfile);
+    // SequelizeForeignKeyConstraintError
+  }).catch(next);
+});
+
 function validateLogin(actualUser, givenUser){
   if (actualUser){
     return bcrypt.compare(givenUser.password,actualUser.password).then((res) =>{
