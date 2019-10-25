@@ -1,9 +1,14 @@
 const User = require('.').User;
 
 const userProfile = (sequelize, DataTypes) => {
-  const UserProfile = sequelize.define('userProfile', { //createdAt is a collum which was generated aut by sequelize
+  const UserProfile = sequelize.define('user_profile', { //createdAt is a collum which was generated aut by sequelize
     location: {
       type: DataTypes.STRING
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true
     },
     overview: {
       type: DataTypes.STRING
@@ -18,13 +23,11 @@ const userProfile = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     }
   }, {
-    timestamps: false// check
+    underscored: true
   });
 
   UserProfile.associate = function(models) {
-    UserProfile.belongsTo(models.User, {
-      foreignKey: 'id',
-    });
+    UserProfile.belongsTo(models.User)
 
     UserProfile.hasMany(models.Pet, {
       foreignKey: 'owner_id',
