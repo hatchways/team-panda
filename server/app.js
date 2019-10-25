@@ -25,6 +25,24 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+// handle Sequelize errors
+app.use(function(err, req, res, next) {
+  if(err && err.name && err.name.includes('Sequelize')){
+    res.status(400).send({errorMsg:err.errors[0].message});
+  }else{
+    next(err);
+  }
+});
+
+// handle login errors
+app.use(function(err, req, res, next) {
+  if(err.loginError){
+    res.status(401).send({errorMsg:err.loginError});
+  }else{
+    next(err);
+  }
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
