@@ -46,14 +46,12 @@ export default function AuthPage({ name, displayName }) {
     };
 
     const handleClose = () => {
-        console.log('closing snackabr', open);
         setAuthError(null);//clear auth error
         setOpen(false);
     };
 
     useEffect(() => {
         if (authError && !open) {
-            console.log('opening snackbar');
             handleOpen();
         }
     });
