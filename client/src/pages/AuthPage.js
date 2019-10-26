@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import AuthForm from "../components/AuthForm";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Snackbar } from "@material-ui/core";
@@ -38,7 +38,7 @@ export default function AuthPage({ name, displayName }) {
         signup: "/login",
         login: "/signup"
     };
-    const { user, authError, setAuthError } = useAuth();
+    const { authError, setAuthError } = useAuth();
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -46,7 +46,7 @@ export default function AuthPage({ name, displayName }) {
     };
 
     const handleClose = () => {
-        setAuthError(null);//clear auth error
+        setAuthError(null); //clear auth error
         setOpen(false);
     };
 
@@ -73,20 +73,25 @@ export default function AuthPage({ name, displayName }) {
                             </Button>
                         </Link>
                     </div>
-                    <AuthForm name={name} displayName={displayName} />
+                    <AuthForm formName={name} displayName={displayName} />
                 </div>
             </div>
             <Snackbar
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 open={open}
                 onClose={handleClose}
-                autoHideDuration = {5000}
+                autoHideDuration={5000}
             >
                 <MySnackbarContentWrapper
                     variant="error"
                     className={classes.margin}
-                    onClose = {handleClose}
-                    message={(authError && authError.data && authError.data.errorMsg) || ''}
+                    onClose={handleClose}
+                    message={
+                        (authError &&
+                            authError.data &&
+                            authError.data.errorMsg) ||
+                        ""
+                    }
                 />
             </Snackbar>
         </div>

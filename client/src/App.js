@@ -15,17 +15,13 @@ function App() {
             <AuthProvider>
                 <BrowserRouter>
                     <Switch>
-                    <Route exact path="/" component={LandingPage} />
-                      <Route
-                          exact path="/login"
-                      >
-                        <AuthPage name="login" displayName = 'Log In'/>
-                      </Route>
-                      <Route
-                          exact path="/signup"
-                          >
-                            <AuthPage name="signup" displayName = 'Sign Up'/>
-                          </Route>
+                        <Route exact path="/" component={LandingPage} />
+                        <Route exact path="/login">
+                            <AuthPage name="login" displayName="Log In" />
+                        </Route>
+                        <Route exact path="/signup">
+                            <AuthPage name="signup" displayName="Sign Up" />
+                        </Route>
                     </Switch>
                 </BrowserRouter>
             </AuthProvider>

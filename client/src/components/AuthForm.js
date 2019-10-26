@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { useAuth } from "../utils/AuthProvider";
-import _ from "lodash";
+
 const useStyles = makeStyles(theme => ({
     root: {},
     container: {},
@@ -13,58 +13,72 @@ const useStyles = makeStyles(theme => ({
     displayName: {}
 }));
 
-const AuthForm = props => {
-    const { name, displayName } = props;
-    const classes = useStyles();
-    const [authForm, setAuthForm] = useState({
-        email: "",
-        password: "",
-        name: "",
-        confirmPassword: ""
-    });
+const PWD_LENGTH_MSG = "Passwords have to be atleast 6 characters long";
+const PWD_CONFIRM_MSG = "The passwords you have entered do not match";
 
-    const pwdRef = useRef(null);
-    const pwdRepeatRef = useRef(null);
-    const handleChange = elName => event => {
-        if (name === "signup") {
+const AuthForm = props => {
+    const { formName, displayName } = props;
+    const classes = useStyles();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [pwdValid, setPwdValid] = useState("");
+    const [confirmPwdValid, setConfirmPwdValid] = useState("");
+
+    const setAuthForm = {
+        email: setEmail,
+        password: setPassword,
+        name: setName,
+        confirmPassword: setConfirmPassword
+    };
+
+    const setValidation = {
+        password: setPwdValid,
+        confirmPassword: setConfirmPwdValid
+    };
+
+    const validatePasswords = (elName, value) => {
+        if (formName === "signup") {
             if (
                 (elName === "password" || elName === "confirmPassword") &&
-                event.target.value &&
-                event.target.value.length < 6
+                value.length < 6
             ) {
-                event.target.setCustomValidity(
-                    "Passwords have to be atleast 6 characters long"
-                );
-                setAuthForm({ ...authForm, [elName]: event.target.value });
+                setValidation[elName](PWD_LENGTH_MSG);
                 return;
-            } else {
-                event.target.setCustomValidity("");
+            } else if (elName in setValidation && value.length >= 6) {
+                setValidation[elName]("");
             }
-            if (elName === "confirmPassword") {
-                if (authForm.password !== event.target.value) {
-                    event.target.setCustomValidity(
-                        "The passwords you have entered do not match"
-                    );
-                    setAuthForm({ ...authForm, [elName]: event.target.value });
-                    return;
+            if (elName in setValidation) {
+                if (elName === "confirmPassword" && password !== value) {
+                    setValidation[elName](PWD_CONFIRM_MSG);
+                } else if (elName === "password" && confirmPassword !== value) {
+                    setValidation[elName](PWD_CONFIRM_MSG);
                 } else {
-                    event.target.setCustomValidity("");
+                    for (let vld in setValidation) {
+                        setValidation[vld]("");
+                    }
                 }
             }
         }
-        setAuthForm({ ...authForm, [elName]: event.target.value });
     };
 
-    const { logIn, user, signUp, logOut } = useAuth();
+    const handleChange = elName => event => {
+        validatePasswords(elName, event.target.value);
+        setAuthForm[elName](event.target.value);
+    };
+
+    const { logIn, signUp } = useAuth();
 
     const handleSubmit = event => {
         event.preventDefault();
-        switch (name) {
+        switch (formName) {
             case "login":
-                logIn(_.pick(authForm, ["email", "password"]));
+                logIn({ email, password });
                 break;
             case "signup":
-                signUp(authForm);
+                signUp({ email, name, password, confirmPassword });
                 break;
             default:
                 return;
@@ -74,22 +88,22 @@ const AuthForm = props => {
     return (
         <div>
             <h1 className={classes.displayName}>
-                {name === "signup" ? "Create an Account" : displayName}
+                {formName === "signup" ? "Create an Account" : displayName}
             </h1>
             <form
                 className={classes.container}
                 onSubmit={handleSubmit}
-                name={name}
+                name={formName}
                 autoComplete="off"
             >
                 <div>
-                    {name === "signup" ? (
+                    {formName === "signup" ? (
                         <TextField
                             id="name"
                             label="Name"
                             className={classes.textField}
                             margin="normal"
-                            value={authForm.name}
+                            value={name}
                             onChange={handleChange("name")}
                             variant="outlined"
                             required
@@ -104,7 +118,7 @@ const AuthForm = props => {
                         type="email"
                         className={classes.textField}
                         margin="normal"
-                        value={authForm.email}
+                        value={email}
                         onChange={handleChange("email")}
                         required
                         variant="outlined"
@@ -118,26 +132,28 @@ const AuthForm = props => {
                         className={classes.textField}
                         margin="normal"
                         type="password"
-                        value={authForm.password}
+                        value={password}
                         onChange={handleChange("password")}
                         required
                         variant="outlined"
                         fullWidth
-                        inputRef={pwdRef}
+                        helperText={pwdValid}
+                        error={pwdValid.length === 0 ? false : true}
                     />
-                    {name === "signup" ? (
+                    {formName === "signup" ? (
                         <TextField
                             id="confirmPassword"
                             label="Repeat Password"
                             className={classes.textField}
                             margin="normal"
                             type="password"
-                            value={authForm.confirmPassword}
+                            value={confirmPassword}
                             onChange={handleChange("confirmPassword")}
                             required
                             variant="outlined"
                             fullWidth
-                            inputRef={pwdRepeatRef}
+                            helperText={confirmPwdValid}
+                            error={confirmPwdValid.length === 0 ? false : true}
                         />
                     ) : (
                         ""
@@ -150,7 +166,7 @@ const AuthForm = props => {
                         size="small"
                         type="submit"
                     >
-                        {name === "signup" ? "Create" : displayName}
+                        {formName === "signup" ? "Create" : displayName}
                     </Button>
                 </div>
             </form>
@@ -164,8 +180,7 @@ export default AuthForm;
  * PROP TYPES
  */
 
-// AuthForm.propTypes = {
-//     name: PropTypes.string.isRequired,
-//     displayName: PropTypes.string.isRequired
-//
-// }
+AuthForm.propTypes = {
+    formName: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired
+};
