@@ -8,7 +8,8 @@ const userProfile = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     overview: {
       type: DataTypes.STRING
@@ -40,7 +41,11 @@ const userProfile = (sequelize, DataTypes) => {
       foreignKey: 'user_id'
     })
   };
-
+  UserProfile.updateById = (id, updatedUserProfile) => {
+    return UserProfile.findOne({where:{userId: id}}).then((profile) => {
+      profile.update(updatedUserProfile);
+    });
+  }
   return UserProfile;
 }
 
