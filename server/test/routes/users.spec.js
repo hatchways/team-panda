@@ -58,7 +58,8 @@ describe("POST /users routes", () => {
           res.body.should.have.property('id').eql(testUser.id);
           res.body.should.have.property('email').eql(testUser.email);
           res.body.should.have.property('token');
-          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.id.toString());
+          jwt.verify(res.body.token,'tempSecret')
+            .should.have.property('id').eql(testUser.id);
           done();
         });
     });
@@ -162,7 +163,8 @@ describe("POST /users routes", () => {
           res.body.should.have.property('id').eql(testUser.id);
           res.body.should.have.property('email').eql(testUser.email);
           res.body.should.have.property('token');
-          jwt.verify(res.body.token,'tempSecret').should.eql(testUser.id.toString());          
+          jwt.verify(res.body.token,'tempSecret')
+            .should.have.property('id').eql(testUser.id);          
           done();
         });
     });
