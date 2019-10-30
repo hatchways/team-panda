@@ -3,6 +3,8 @@ import express, { json, urlencoded } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import passport from "./routes/authentication";
+import { CustomError } from "./errors/"
 
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
@@ -15,10 +17,11 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
+app.use(passport.initialize());
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
-app.use("/users", usersRouter);
+app.use("/users", usersRouter(passport));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -34,10 +37,10 @@ app.use(function(err, req, res, next) {
   }
 });
 
-// handle login errors
+// handle custom errors
 app.use(function(err, req, res, next) {
-  if(err.loginError){
-    res.status(401).send({errorMsg:err.loginError});
+  if (err instanceof CustomError){
+    res.status(err.status).send({errorMsg:err.message});
   }else{
     next(err);
   }
