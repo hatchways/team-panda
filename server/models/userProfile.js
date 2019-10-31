@@ -1,53 +1,57 @@
-const User = require('.').User;
+const User = require(".").User;
 
 const userProfile = (sequelize, DataTypes) => {
-  const UserProfile = sequelize.define('user_profile', { //createdAt is a collum which was generated aut by sequelize
-    location: {
-      type: DataTypes.STRING
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      unique: true,
-      primaryKey: true
-    },
-    overview: {
-      type: DataTypes.STRING
-    },
-    introduction: {
-      type: DataTypes.STRING
-    },
-    profile_pic: {
-      type: DataTypes.STRING
-    },
-    profile_bg: {
-      type: DataTypes.STRING
-    }
-  }, {
-    underscored: true
-  });
+    const UserProfile = sequelize.define(
+        "user_profile",
+        {
+            //createdAt is a collum which was generated aut by sequelize
+            location: {
+                type: DataTypes.STRING
+            },
+            userId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                unique: true,
+                primaryKey: true
+            },
+            overview: {
+                type: DataTypes.STRING
+            },
+            introduction: {
+                type: DataTypes.STRING
+            },
+            profile_pic: {
+                type: DataTypes.STRING
+            },
+            profile_bg: {
+                type: DataTypes.STRING
+            }
+        },
+        {
+            underscored: true
+        }
+    );
 
-  UserProfile.associate = function(models) {
-    UserProfile.belongsTo(models.User)
+    UserProfile.associate = function(models) {
+        UserProfile.belongsTo(models.User);
 
-    UserProfile.hasMany(models.Pet, {
-      foreignKey: 'owner_id',
-      as: 'pets'
-    });
+        UserProfile.hasMany(models.Pet, {
+            foreignKey: "owner_id",
+            as: "pets"
+        });
 
-    UserProfile.belongsToMany(models.Pet, {
-      through: 'Followed_pet',
-      as: 'following',
-      foreignKey: 'user_id'
-    })
-  };
-  UserProfile.updateById = (id, updatedUserProfile) => {
-    return UserProfile.findOne({where:{userId: id}}).then((profile) => {
-      profile.update(updatedUserProfile);
-    });
-  }
-  return UserProfile;
-}
+        UserProfile.belongsToMany(models.Pet, {
+            through: "Followed_pet",
+            as: "following",
+            foreignKey: "user_id"
+        });
+    };
+    UserProfile.updateById = (id, updatedUserProfile) => {
+        return UserProfile.findOne({ where: { userId: id } }).then(profile => {
+            profile.update(updatedUserProfile);
+        });
+    };
+    return UserProfile;
+};
 
 export default userProfile;
-
