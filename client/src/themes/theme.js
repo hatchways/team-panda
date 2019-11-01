@@ -2,7 +2,15 @@ import { createMuiTheme } from "@material-ui/core";
 
 export const theme = createMuiTheme({
     typography: {
-        fontFamily: '"Roboto"'
+        fontFamily: "century-gothic, sans-serif",
+        button: {
+            fontWeight: "bold",
+            textTransform: "none",
+            color: "#ffffff"
+        },
+        h5: {
+            fontWeight: "500"
+        }
     },
     overrides: {
         MuiButton: {
@@ -11,8 +19,9 @@ export const theme = createMuiTheme({
             }
         }
     },
-    primary: "#f04040",
-    secondary: "#1f1f1f",
+    primary: "#2e363c",
+    secondary: "#2e363c",
     error: "#d8000c",
-    bgcolor: "#f6f6f6"
+    bgcolor: "#2e363c",
+    gradient: "linear-gradient(to right, #FF9400, #FF3963)"
 });
