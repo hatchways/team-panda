@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
-import { authLogIn, authSignUp, authLogOut } from "./auth";
+import { authLogIn, authSignUp, authLogOut, authRequest } from "./auth";
 
 const AuthContext = createContext();
 
@@ -45,12 +45,23 @@ function useProvideAuth() {
         }
     };
 
+    const getUserProfile = async id => {
+        try {
+            const res = await authRequest(`/users/${id}`, { method: "GET" });
+            setUser(res.data);
+        } catch (error) {
+            setAuthError(error.response);
+        }
+    };
+
     return {
         logIn,
         signUp,
         signOut,
         user,
+        setUser,
         authError,
-        setAuthError
+        setAuthError,
+        getUserProfile
     };
 }
