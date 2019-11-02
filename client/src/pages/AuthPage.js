@@ -42,7 +42,7 @@ export default function AuthPage({ name, displayName }) {
             <div className={classes.container}>
                 <img
                     className={classes.authPicture}
-                    src="authPicture.png"
+                    src="auth-picture.png"
                     alt="two dogs"
                 />
                 <div className={classes.authContainer}>
