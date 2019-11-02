@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { useAuth } from "../utils/AuthProvider";
+import PrimaryButton from "./PrimaryButton";
 
 const useStyles = makeStyles(theme => ({
     root: {},
     container: {},
     textField: {},
 
-    displayName: {}
+    displayName: {},
+    buttonColor: {
+        background: theme.gradient
+    }
 }));
 
 const PWD_LENGTH_MSG = "Passwords have to be atleast 6 characters long";
@@ -160,14 +164,15 @@ const AuthForm = props => {
                     )}
                 </div>
                 <div>
-                    <Button
+                    <PrimaryButton
                         variant="contained"
-                        color="primary"
-                        size="small"
+                        size="medium"
                         type="submit"
                     >
-                        {formName === "signup" ? "Create" : displayName}
-                    </Button>
+                        <Typography variant="button">
+                            {formName === "signup" ? "Create" : displayName}
+                        </Typography>
+                    </PrimaryButton>
                 </div>
             </form>
         </div>

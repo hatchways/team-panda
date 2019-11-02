@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import AuthForm from "../components/AuthForm";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Snackbar } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { useAuth } from "../utils/AuthProvider";
-import { MySnackbarContentWrapper } from "../components/Snackbar";
+import { Button, Typography } from "@material-ui/core";
+import LinkButton from "../components/LinkButton";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,62 +36,31 @@ export default function AuthPage({ name, displayName }) {
         signup: "/login",
         login: "/signup"
     };
-    const { authError, setAuthError } = useAuth();
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setAuthError(null); //clear auth error
-        setOpen(false);
-    };
-
-    useEffect(() => {
-        if (authError && !open) {
-            handleOpen();
-        }
-    });
 
     return (
         <div className={classes.root}>
             <div className={classes.container}>
                 <img
                     className={classes.authPicture}
-                    src="authPicture.png"
+                    src="auth-picture.png"
                     alt="two dogs"
                 />
                 <div className={classes.authContainer}>
                     <div className={classes.authButton}>
-                        <Link to={mapRoutes[name]}>
-                            <Button variant="outlined">
+                        <Button
+                            variant="outlined"
+                            component={LinkButton}
+                            to={mapRoutes[name]}
+                        >
+                            <Typography color="textPrimary" variant="button">
                                 {name === "signup" ? "Log In" : "Sign Up"}
-                                {/* show login button on sign up page and sign up button on log in page for switching */}
-                            </Button>
-                        </Link>
+                            </Typography>
+                            {/* show login button on sign up page and sign up button on log in page for switching */}
+                        </Button>
                     </div>
                     <AuthForm formName={name} displayName={displayName} />
                 </div>
             </div>
-            <Snackbar
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                open={open}
-                onClose={handleClose}
-                autoHideDuration={5000}
-            >
-                <MySnackbarContentWrapper
-                    variant="error"
-                    className={classes.margin}
-                    onClose={handleClose}
-                    message={
-                        (authError &&
-                            authError.data &&
-                            authError.data.errorMsg) ||
-                        ""
-                    }
-                />
-            </Snackbar>
         </div>
     );
 }
