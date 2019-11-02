@@ -107,6 +107,7 @@ function createJWTResponse(user) {
     return {
         email: user.email,
         id: user.id,
+        name: user.name,
         token: jwt.sign({ id: user.id }, "tempSecret")
     };
 }
