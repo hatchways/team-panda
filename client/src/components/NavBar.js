@@ -58,6 +58,15 @@ export default function(props) {
                 type="button"
                 variant="text"
                 component={LinkButton}
+                to="/notifications"
+            >
+                <Typography variant="button">Notifications</Typography>
+            </Button>
+            <Button
+                size="medium"
+                type="button"
+                variant="text"
+                component={LinkButton}
                 to="/feed"
             >
                 <Typography variant="button">Feed</Typography>
