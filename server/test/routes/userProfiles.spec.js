@@ -72,7 +72,7 @@ describe("/users/ profile routes", () => {
                 });
         });
 
-        it("should return 500 unauthorized if id in jwt does not match id in request params", done => {
+        it("should return 403 unauthorized if id in jwt does not match id in request params", done => {
             let differentUser = { ...testUser };
             differentUser.id = 2;
             chai.assert(differentUser.id == 2);
@@ -134,7 +134,7 @@ describe("/users/ profile routes", () => {
                 });
         });
 
-        it("should return 500 unauthorized if id in jwt does not match id in request params", done => {
+        it("should return 403 unauthorized if id in jwt does not match id in request params", done => {
             let differentUser = { ...testUser };
             differentUser.id = 2;
             chai.assert(differentUser.id == 2);
