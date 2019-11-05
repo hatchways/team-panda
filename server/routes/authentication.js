@@ -29,9 +29,11 @@ passport.use(
 passport.use(
     "jwt",
     new JwtStrategy(opts, (req, jwt_payload, done) => {
-        models.User.findOne({ where: { id: jwt_payload.id } })
+        let id = req.params.userId || jwt_payload.id;
+        models.User.findOne({ where: { id } })
             .then(user => {
-                done(null, user);
+                if (user) return done(null, user);
+                done(`User with id of '${id}' does not exist`, false);
             })
             .catch(err => {
                 done(err, false);
