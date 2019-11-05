@@ -35,11 +35,6 @@ const userProfile = (sequelize, DataTypes) => {
     UserProfile.associate = function(models) {
         UserProfile.belongsTo(models.User);
 
-        UserProfile.hasMany(models.Pet, {
-            foreignKey: "owner_id",
-            as: "pets"
-        });
-
         UserProfile.belongsToMany(models.Pet, {
             through: "Followed_pet",
             as: "following",

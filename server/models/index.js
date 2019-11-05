@@ -18,6 +18,10 @@ const models = {
     Post: sequelize.import("./post"),
     Followed_pet: sequelize.import("./followed_pet")
 };
-
+Object.keys(models).forEach(key => {
+    if ("associate" in models[key]) {
+        models[key].associate(models);
+    }
+});
 export { sequelize };
 export default models;
