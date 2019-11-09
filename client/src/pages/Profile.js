@@ -11,7 +11,8 @@ import {
     Button,
     Card,
     Divider,
-    CardHeader
+    CardHeader,
+    Link
 } from "@material-ui/core";
 import TabPanel from "../components/TabPanel";
 import PrimaryButton from "../components/PrimaryButton";
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
     container: {
         width: "80vw",
-        height: "calc(100vh - 64px)"
+        minHeight: "calc(100vh - 64px)"
     },
     headline: {
         textAlign: "center",
@@ -240,12 +241,16 @@ export default function Profile() {
                                             alt="pet-profile-pic"
                                             src={pet.profilePic}
                                         />
-                                        <Typography variant="subtitle2">
-                                            {pet.name}
-                                        </Typography>
-                                        <Typography variant="caption">
-                                            {placeholderProfile.location}
-                                        </Typography>
+                                        <Link
+
+                                            >
+                                            <Typography variant="subtitle2">
+                                                {pet.name}
+                                            </Typography>
+                                            <Typography variant="caption">
+                                                {placeholderProfile.location}
+                                            </Typography>
+                                        </Link>
                                     </div>
                                 );
                             })}
