@@ -61,6 +61,13 @@ const user = (sequelize, DataTypes) => {
             timestamps: false
         }
     );
+
+    User.associate = function(models) {
+        User.hasMany(models.Pet, {
+            foreignKey: "owner_id",
+            as: "pets"
+        });
+    };
     return User;
 };
 

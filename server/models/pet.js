@@ -1,50 +1,57 @@
-const User = require(".").User;
-
 const pet = (sequelize, DataTypes) => {
-    const Pets = sequelize.define("pet", {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+    const Pet = sequelize.define(
+        "pet",
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            ownerId: {
+                type: DataTypes.INTEGER
+            },
+            animal: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            date_of_birth: {
+                type: DataTypes.DATE,
+                allowNull: false
+            },
+            profile_pic: {
+                type: DataTypes.STRING
+            },
+            about: {
+                type: DataTypes.STRING
+            }
         },
-        owner_id: {
-            type: DataTypes.INTEGER
-        },
-        animal: {
-            type: DataTypes.STRING
-        },
-        name: {
-            type: DataTypes.STRING
-        },
-        date_of_birth: {
-            type: DataTypes.DATE
-        },
-        profile_pic: {
-            type: DataTypes.STRING
-        },
-        about: {
-            type: DataTypes.STRING
+        {
+            underscored: true
         }
-    });
+    );
 
-    Pets.associate = function(models) {
-        Pets.belongsTo(models.UserProfile, {
-            foreignKey: "owner_id"
+    Pet.associate = function(models) {
+        Pet.belongsTo(models.User, {
+            as: "owner"
         });
 
-        Pets.hasMany(models.Post, {
+        Pet.hasMany(models.Post, {
             foreignKey: "pet_id",
             as: "post"
         });
 
-        Pets.belongsToMany(models.UserProfile, {
+        Pet.belongsToMany(models.UserProfile, {
             through: "Followed_pet",
             as: "followers",
             foreignKey: "pet_id"
         });
     };
 
-    return Pets;
+    return Pet;
 };
 
 export default pet;

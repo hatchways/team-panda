@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { AuthenticationError } = require("../errors");
 
 module.exports = auth => {
+    router.use("/:userId/pets", require("./pets").petsOwners(auth));
     router.post("/register", (req, res, next) => {
         let newUser = {
             name: req.body.name,
