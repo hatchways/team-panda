@@ -15,7 +15,7 @@ export default function({ size, variant, type, children, ...props }) {
             variant={variant || "contained"}
             size={size || "medium"}
             type={type || "button"}
-            className={classes.color}
+            className={classes.color + " " + props.className}
             {...props}
         >
             {children}
