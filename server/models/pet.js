@@ -18,11 +18,11 @@ const pet = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            date_of_birth: {
+            dateOfBirth: {
                 type: DataTypes.DATE,
                 allowNull: false
             },
-            profile_pic: {
+            profilePic: {
                 type: DataTypes.STRING
             },
             about: {
