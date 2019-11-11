@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import TabPanel from "../components/TabPanel";
 import PrimaryButton from "../components/PrimaryButton";
+import AddPetsButton from "../components/dialogs/AddPets";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "center"
     },
-    editButton:{
+    editButton: {
         marginLeft: 50
     }
 }));
@@ -91,36 +92,34 @@ export default function Profile() {
                     <Typography variant="h1" className={classes.name}>
                         {user && user.name}
                     </Typography>
-                        <Typography
-                            variant="subtitle1"
-                            className={classes.subtitle}
+                    <Typography
+                        variant="subtitle1"
+                        className={classes.subtitle}
+                    >
+                        {user && user.overview}
+                    </Typography>
+                    <div className={classes.summaryButtons}>
+                        <PrimaryButton
+                            onClick={handleMessageClick}
+                            variant="contained"
+                            size="medium"
+                            type="button"
                         >
-                            {user && user.overview}
-                        </Typography>
-                    <div className = {classes.summaryButtons}>
-
-                            <PrimaryButton
-                                onClick={handleMessageClick}
-                                variant="contained"
-                                size="medium"
-                                type="button"
-                            >
-                                <Typography variant="button">Message</Typography>
-                            </PrimaryButton>
-                            {/* TODO don't show edit button if not own profile */}
-                            <Button
-                                onClick={handleMessageClick}
-                                type="button"
-                                variant="contained"
-                                color="secondary"
-                                size="medium"
-                                className = {classes.editButton}
-                            >
-                                <Typography color="textPrimary" variant="button">
-                                    Edit
-                                </Typography>
-                            </Button>
-
+                            <Typography variant="button">Message</Typography>
+                        </PrimaryButton>
+                        {/* TODO don't show edit button if not own profile */}
+                        <Button
+                            onClick={handleMessageClick}
+                            type="button"
+                            variant="contained"
+                            color="secondary"
+                            size="medium"
+                            className={classes.editButton}
+                        >
+                            <Typography color="textPrimary" variant="button">
+                                Edit
+                            </Typography>
+                        </Button>
                     </div>
                 </Grid>
                 <Tabs
