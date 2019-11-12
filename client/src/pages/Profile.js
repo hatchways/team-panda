@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import TabPanel from "../components/TabPanel";
 import PrimaryButton from "../components/PrimaryButton";
+import AddPetsButton from "../components/dialogs/AddPets";
 import placeholderProfile from "../utils/placeholderProfile";
 
 const useStyles = makeStyles(theme => ({
@@ -168,7 +169,8 @@ export default function Profile() {
                         <Button
                             onClick={handleMessageClick}
                             type="button"
-                            variant="outlined"
+                            variant="contained"
+                            color="secondary"
                             size="medium"
                             className={classes.editButton}
                         >

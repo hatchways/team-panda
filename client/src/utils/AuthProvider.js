@@ -48,7 +48,7 @@ function useProvideAuth() {
     const getUserProfile = async id => {
         try {
             const res = await authRequest(`/users/${id}`, { method: "GET" });
-            setUser({...user, ...res.data});
+            setUser({ ...user, ...res.data });
         } catch (error) {
             setAuthError(error.response);
         }
