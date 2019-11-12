@@ -10,6 +10,9 @@ export const theme = createMuiTheme({
         },
         h5: {
             fontWeight: "500"
+        },
+        h4:{
+            marginBottom: 10
         }
     },
     overrides: {

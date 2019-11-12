@@ -84,7 +84,7 @@ export default function(props) {
     )
 
     return (
-        <AppBar position="static" className={classes.root}>
+        <AppBar position="sticky" className={classes.root}>
             <Toolbar>
                 <Typography variant="h5">PET WORLD</Typography>
                 <div className={classes.grow} />

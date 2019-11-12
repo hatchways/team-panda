@@ -7,11 +7,19 @@ import { useAuth } from "../utils/AuthProvider";
 import PrimaryButton from "./PrimaryButton";
 
 const useStyles = makeStyles(theme => ({
-    root: {},
-    container: {},
-    textField: {},
-
-    displayName: {},
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-around",
+        alignItems: "flex-start"
+    },
+    container: {
+        height: 400,
+        width: 350,
+    },
+    button:{
+      marginTop: 10
+    },
     buttonColor: {
         background: theme.gradient
     }
@@ -90,7 +98,7 @@ const AuthForm = props => {
     };
 
     return (
-        <div>
+        <div className={classes.root}>
             <h1 className={classes.displayName}>
                 {formName === "signup" ? "Create an Account" : displayName}
             </h1>
@@ -163,10 +171,10 @@ const AuthForm = props => {
                         ""
                     )}
                 </div>
-                <div>
+                <div className = {classes.button}>
                     <PrimaryButton
                         variant="contained"
-                        size="medium"
+                        size="large"
                         type="submit"
                     >
                         <Typography variant="button">
