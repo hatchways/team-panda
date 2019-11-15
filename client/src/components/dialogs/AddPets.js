@@ -9,63 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { createPet } from "../../utils/petService";
-import { useDropzone } from "react-dropzone";
-
-function PetImageDropZone(props) {
-    const [imgs, setImgs] = React.useState([]);
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        accept: "image/*",
-        multiple: false,
-        onDrop: files => {
-            setImgs(
-                files.map(file =>
-                    Object.assign(file, {
-                        preview: URL.createObjectURL(file)
-                    })
-                )
-            );
-            props.returnImgToParent(files[0]);
-        }
-    });
-
-    const previewContainerProps = {
-        width: "30%",
-        height: "auto",
-        marginLeft: "auto",
-        marginRight: "auto"
-    };
-    const previewProps = {
-        width: "100%",
-        height: "auto",
-        display: "block"
-    };
-    const preview = imgs.map((file, i) => (
-        <div style={previewContainerProps} key={i}>
-            <img src={file.preview} style={previewProps}></img>
-        </div>
-    ));
-
-    React.useEffect(() => () => {
-        imgs.forEach(img => URL.revokeObjectURL(img.preview), [imgs]);
-    });
-
-    return (
-        <div>
-            <div style={{ backgroundColor: "#eee" }}>
-                <div {...getRootProps()}>
-                    <input
-                        {...getInputProps()}
-                        // style={{ height: "100px", width: "100%" }}
-                    />
-                    <p>Drop Profile Picture or click to upload.</p>
-                </div>
-            </div>
-            <div>
-                <aside>{preview}</aside>
-            </div>
-        </div>
-    );
-}
+import PetImageDropZone from "../ImageDropZone";
 
 const useStyles = makeStyles(theme => ({
     root: {},
@@ -99,7 +43,7 @@ export default function AddPetsDialog(props) {
         profilePic: setProfilePic
     };
 
-    const classes = useStyles();
+    const classes = props.classes;
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -126,9 +70,10 @@ export default function AddPetsDialog(props) {
     return (
         <div>
             <PrimaryButton
-                variant="contained"
-                type="button"
                 onClick={handleClickOpen}
+                variant="contained"
+                size="large"
+                type="button"
             >
                 <Typography variant="button">Add Pet</Typography>
             </PrimaryButton>
@@ -140,7 +85,7 @@ export default function AddPetsDialog(props) {
                         label="Pet's Name"
                         value={name}
                         onChange={handleChange("name")}
-                        className={classes.textField}
+                        className={props.classes.textField}
                         variant="outlined"
                         fullWidth
                         margin="dense"
@@ -151,7 +96,7 @@ export default function AddPetsDialog(props) {
                         id="animal"
                         label="Animal Type"
                         value={animal}
-                        className={classes.textField}
+                        className={props.classes.textField}
                         onChange={handleChange("animal")}
                         variant="outlined"
                         fullWidth
@@ -164,7 +109,7 @@ export default function AddPetsDialog(props) {
                         default="2019-12-09"
                         label="Date of Birth"
                         value={dateOfBirth}
-                        className={classes.textField}
+                        className={props.classes.textField}
                         onChange={handleChange("dateOfBirth")}
                         variant="outlined"
                         fullWidth
@@ -178,7 +123,7 @@ export default function AddPetsDialog(props) {
                         id="about"
                         label="Pet's About Me"
                         value={about}
-                        className={classes.textField}
+                        className={props.classes.textField}
                         onChange={handleChange("about")}
                         variant="outlined"
                         multiline
@@ -194,7 +139,7 @@ export default function AddPetsDialog(props) {
                     <PrimaryButton
                         variant="contained"
                         type="button"
-                        onClick={handleClickOpen}
+                        onClick={handleSubmit}
                     >
                         <Typography variant="button">Add Pet</Typography>
                     </PrimaryButton>
