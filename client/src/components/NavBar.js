@@ -16,7 +16,6 @@ import { makeStyles } from "@material-ui/styles";
 import PrimaryButton from "./PrimaryButton";
 import LinkButton from "./LinkButton";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import MailIcon from "@material-ui/icons/Mail";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import DynamicFeedIcon from "@material-ui/icons/DynamicFeed";
@@ -61,7 +60,7 @@ export default function NavBar(props) {
     };
 
     const renderLoggedOutButtons = () => (
-        <Fragment>
+        <div>
             <Button
                 size="medium"
                 type="button"
@@ -80,11 +79,11 @@ export default function NavBar(props) {
             >
                 <Typography variant="button">Log In</Typography>
             </PrimaryButton>
-        </Fragment>
+        </div>
     );
 
     const renderLoggedInButtons = () => (
-        <Fragment>
+        <div>
             <Button
                 size="medium"
                 type="button"
@@ -112,48 +111,50 @@ export default function NavBar(props) {
             >
                 <Typography variant="button">My Pets</Typography>
             </PrimaryButton>
-        </Fragment>
+        </div>
     );
 
     const renderLoggedOutMobileButtons = () => (
-        <Fragment>
+        <div>
             <MenuItem component = {Link} to = "/signup">
                 <p>Sign Up</p>
             </MenuItem>
             <MenuItem component = {Link} to = "/login">
                 <p>Log In</p>
             </MenuItem>
-        </Fragment>
+        </div>
     );
 
     const renderLoggedInMobileButtons = () => (
-        <Fragment>
-            <MenuItem component = {Link} to = "/notifications">
-                <IconButton
-                    color="inherit"
-                >
-                    {/* TODO: update notification number */}
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
-            <MenuItem component = {Link} to = "/feed">
-                <IconButton color="inherit">
-                    <Badge badgeContent={11} color="secondary">
-                        <DynamicFeedIcon />
-                    </Badge>
-                </IconButton>
-                <p>Feed</p>
-            </MenuItem>
-            <MenuItem component = {Link} to = "/mypets">
-                <IconButton color="inherit" >
-                    <AccountCircle />
-                </IconButton>
-                <p>My Pets</p>
-            </MenuItem>
-        </Fragment>
+
+            <div>
+                <MenuItem component = {Link} to = "/notifications">
+                    <IconButton
+                        color="inherit"
+                    >
+                        {/* TODO: update notification number */}
+                        <Badge badgeContent={4} color="secondary">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                    <p>Notifications</p>
+                </MenuItem>
+                <MenuItem component = {Link} to = "/feed">
+                    <IconButton color="inherit">
+                        <Badge badgeContent={11} color="secondary">
+                            <DynamicFeedIcon />
+                        </Badge>
+                    </IconButton>
+                    <p>Feed</p>
+                </MenuItem>
+                <MenuItem component = {Link} to = "/mypets">
+                    <IconButton color="inherit" >
+                        <AccountCircle />
+                    </IconButton>
+                    <p>My Pets</p>
+                </MenuItem>
+            </div>
+
     );
 
     const renderMobileMenu = (

@@ -37,7 +37,7 @@ export default function AuthPage({ name, displayName }) {
         <div className={classes.root}>
             <Grid container className = {classes.container} >
                 <Hidden xsDown>
-                    <Grid md={5} className = {classes.container
+                    <Grid item md={5} className = {classes.container
                     }>
                         <Grid item className = {classes.authPictureContainer}>
                             <div className = {classes.authPicture}/>

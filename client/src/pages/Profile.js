@@ -221,7 +221,7 @@ export default function Profile() {
                         <div className={classes.overview}>
                             <div>
                                 <Typography variant="h4">Overview</Typography>
-                                <Typography variant="p">
+                                <Typography variant="body1">
                                     {placeholderProfile.overview}
                                 </Typography>
                             </div>
@@ -240,9 +240,11 @@ export default function Profile() {
                             <Typography variant="button">Add Pet</Typography>
                         </PrimaryButton>
                         <div className={classes.petList}>
-                            {placeholderProfile.pets.map(pet => {
+                            {placeholderProfile.pets.map((pet, i)=> {
                                 return (
-                                    <div className={classes.petListItem}>
+                                    <div
+                                        key = {i}
+                                    className={classes.petListItem}>
                                         <Avatar
                                             className={classes.petProfilePic}
                                             alt="pet-profile-pic"
