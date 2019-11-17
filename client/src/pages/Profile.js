@@ -81,10 +81,15 @@ const useStyles = makeStyles(theme => ({
         justifyContent: "center"
     },
     userPanelCard: {
-        width: 250
+        width: 250,
+        margin: 20,
+        [theme.breakpoints.down("xs")]: {
+            width: "100%",
+            textAlign: "center"
+        }
     },
     overview: {
-        flex: 5,
+        margin: "20px 20px"
     },
     petProfilePic: {
         height: 70,
@@ -92,7 +97,8 @@ const useStyles = makeStyles(theme => ({
     },
     petList: {
         display: "flex",
-        margin: "20px 0"
+        padding: "50px 5% 40px 10%",
+        flexWrap: "wrap"
     },
     petListItem: {
         margin: 20,
@@ -102,7 +108,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center"
     },
     buttonVertMargin: {
-        margin: "20px 0",
+        margin: "20px 20px",
         background: theme.gradient
     }
 }));
@@ -199,8 +205,11 @@ export default function Profile() {
                     />
                 </Tabs>
                 <TabPanel value={activeTab} index={0}>
-                    <div className={classes.userPanel}>
-                        <div className={classes.userPanelCardContainer}>
+                    <Grid container
+                    >
+                        <Grid container item xs = {12} md = {5}
+                        justify = "center"
+                        >
                             <Card className={classes.userPanelCard}>
                                 <CardHeader
                                     title="Owner Since"
@@ -217,16 +226,17 @@ export default function Profile() {
                                     subheader={placeholderProfile.pets.length}
                                 />
                             </Card>
-                        </div>
-                        <div className={classes.overview}>
-                            <div>
+                        </Grid>
+                        <Grid container item xs = {12} md = {7}
+                        >
+                            <div className = {classes.overview}>
                                 <Typography variant="h4">Overview</Typography>
                                 <Typography variant="body1">
                                     {placeholderProfile.overview}
                                 </Typography>
                             </div>
-                        </div>
-                    </div>
+                        </Grid>
+                    </Grid>
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
                     <div className={classes.petsPanel}>

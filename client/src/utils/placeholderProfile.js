@@ -16,7 +16,97 @@ const placeholderPets = [
         location: "Toronto, Canada",
         ownerId: "placeholder1",
         profilePic: "snoopy.png"
-    }
+    },
+    {
+        name: "Buster",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "buster.png"
+    },
+    {
+        name: "Meepers",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "meepers.png"
+    },
+    {
+        name: "Snoopy",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "snoopy.png"
+    },
+    {
+        name: "Buster",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "buster.png"
+    },
+    {
+        name: "Meepers",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "meepers.png"
+    },
+    {
+        name: "Snoopy",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "snoopy.png"
+    },
+    {
+        name: "Buster",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "buster.png"
+    },
+    {
+        name: "Meepers",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "meepers.png"
+    },
+    {
+        name: "Snoopy",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "snoopy.png"
+    },
+    {
+        name: "Buster",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "buster.png"
+    },
+    {
+        name: "Meepers",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "meepers.png"
+    },
+    {
+        name: "Snoopy",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "snoopy.png"
+    },
+    {
+        name: "Buster",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "buster.png"
+    },
+    {
+        name: "Meepers",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "meepers.png"
+    },
+    {
+        name: "Snoopy",
+        location: "Toronto, Canada",
+        ownerId: "placeholder1",
+        profilePic: "snoopy.png"
+    },
 ];
 
 const placeholderProfile = {
