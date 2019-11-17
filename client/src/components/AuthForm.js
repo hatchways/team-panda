@@ -14,14 +14,19 @@ const useStyles = makeStyles(theme => ({
         alignItems: "flex-start"
     },
     container: {
-        height: 400,
-        width: 350,
+        width: "50%",
+        [theme.breakpoints.down("sm")]: {
+            width: "90%"
+        }
     },
     button:{
-      marginTop: 10
+      marginTop: 30
     },
     buttonColor: {
         background: theme.gradient
+    },
+    textField: {
+        width: "100%"
     }
 }));
 
@@ -65,8 +70,10 @@ const AuthForm = props => {
             if (elName in setValidation) {
                 if (elName === "confirmPassword" && password !== value) {
                     setValidation[elName](PWD_CONFIRM_MSG);
+                    return
                 } else if (elName === "password" && confirmPassword !== value) {
                     setValidation[elName](PWD_CONFIRM_MSG);
+                    return;
                 } else {
                     for (let vld in setValidation) {
                         setValidation[vld]("");
@@ -85,6 +92,9 @@ const AuthForm = props => {
 
     const handleSubmit = event => {
         event.preventDefault();
+        if (pwdValid || confirmPwdValid){
+            return;
+        }
         switch (formName) {
             case "login":
                 logIn({ email, password });
