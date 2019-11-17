@@ -26,7 +26,10 @@ const useStyles = makeStyles(theme => ({
     },
     container: {
         width: "80vw",
-        minHeight: "calc(100vh - 64px)"
+        minHeight: "calc(100vh - 64px)",
+        [theme.breakpoints.down("md")]: {
+            width: "100%"
+        },
     },
     headline: {
         textAlign: "center",
@@ -35,7 +38,8 @@ const useStyles = makeStyles(theme => ({
     headlineContainer: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        margin: "30px 0"
     },
     profilePic: {
         position: "absolute",
@@ -55,7 +59,8 @@ const useStyles = makeStyles(theme => ({
     },
     summaryButtons: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        margin: "30px 0"
     },
     editButton: {
         marginLeft: 50
@@ -79,7 +84,7 @@ const useStyles = makeStyles(theme => ({
         width: 250
     },
     overview: {
-        flex: 5
+        flex: 5,
     },
     petProfilePic: {
         height: 70,
@@ -128,7 +133,7 @@ export default function Profile() {
 
     return (
         <div className={classes.root}>
-            <Paper className={classes.container}>
+            <Paper className={classes.container} square elevation = {5}>
                 <Grid className={classes.summary}>
                     <div
                         className={classes.profileBg}
@@ -160,7 +165,7 @@ export default function Profile() {
                         <PrimaryButton
                             onClick={handleMessageClick}
                             variant="contained"
-                            size="medium"
+                            size="large"
                             type="button"
                         >
                             <Typography variant="button">Message</Typography>
@@ -169,9 +174,8 @@ export default function Profile() {
                         <Button
                             onClick={handleMessageClick}
                             type="button"
-                            variant="contained"
-                            color="secondary"
-                            size="medium"
+                            variant="outlined"
+                            size="large"
                             className={classes.editButton}
                         >
                             <Typography color="textPrimary" variant="button">
@@ -185,6 +189,7 @@ export default function Profile() {
                     onChange={handleChange}
                     indicatorColor="primary"
                     centered
+                    variant="fullWidth"
                 >
                     <Tab
                         label={`About ${user.name || placeholderProfile.name}`}

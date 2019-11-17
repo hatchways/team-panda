@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
         height: "100%"
     },
     authForm:{
-        paddingLeft: 50
+        paddingLeft: "10%",
+        paddingTop: "3%"
     }
 }));
 
