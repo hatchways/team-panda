@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Typography } from "@material-ui/core";
@@ -8,14 +8,15 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { updateProfile } from "../../utils/userProfileService";
+import { useAuth } from "../../utils/AuthProvider";
 import ImageDropZone from "../ImageDropZone";
 
 export default function UpdateProfileDialog(props) {
     const [open, setOpen] = React.useState(false);
-
-    const [location, setLocation] = React.useState("");
-    const [introduction, setIntroduction] = React.useState("");
-    const [overview, setOverview] = React.useState("");
+    const { user, setUser } = useAuth();
+    const [location, setLocation] = React.useState(user.location);
+    const [introduction, setIntroduction] = React.useState(user.introduction);
+    const [overview, setOverview] = React.useState(user.overview);
     const [profilePic, setProfilePic] = React.useState(null);
     const [profileBg, setProfileBg] = React.useState(null);
 
@@ -35,6 +36,12 @@ export default function UpdateProfileDialog(props) {
         profileBg: setProfileBg
     };
 
+    useEffect(() => {
+        for (let key of Object.keys(setProfileForm)) {
+            setProfileForm[key](user[key]);
+        }
+    }, [user]);
+
     const classes = props.classes;
     const handleClickOpen = () => {
         setOpen(true);
@@ -48,14 +55,15 @@ export default function UpdateProfileDialog(props) {
         setProfileForm[property](event.target.value);
     };
 
-    const handleSubmit = () => {
-        updateProfile(props.userId, {
+    const handleSubmit = async () => {
+        let updatedProfile = await updateProfile(user.id, {
             overview,
             introduction,
             location,
             profilePic,
             profileBg
         });
+        setUser({ ...user, ...updatedProfile });
         handleClose();
     };
 
