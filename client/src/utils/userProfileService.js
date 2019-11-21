@@ -3,7 +3,7 @@ import { authRequest } from "../utils/auth";
 export const updateProfile = async (userId, userProfile) => {
     let formData = new FormData();
     for (let prop in userProfile) {
-        formData.append(prop, userProfile[prop]);
+        if (userProfile[prop]) formData.append(prop, userProfile[prop]);
     }
     const res = await authRequest(`/users/${userId}`, {
         method: "PUT",
@@ -13,6 +13,5 @@ export const updateProfile = async (userId, userProfile) => {
             "Content-Type": "multipart/form-data"
         }
     });
-
     return res.data;
 };
