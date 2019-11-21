@@ -3,7 +3,7 @@ import { authRequest } from "../utils/auth";
 export const createPet = async (userId, petInfo) => {
     let formData = new FormData();
     for (let prop in petInfo) {
-        formData.append(prop, petInfo[prop]);
+        if (petInfo[prop]) formData.append(prop, petInfo[prop]);
     }
     const res = await authRequest(`/users/${userId}/pets`, {
         method: "POST",
