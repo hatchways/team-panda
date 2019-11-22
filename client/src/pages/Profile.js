@@ -25,11 +25,12 @@ const useStyles = makeStyles(theme => ({
         justifyContent: "center"
     },
     container: {
-        width: "80vw",
+        width: "60vw",
         minHeight: "calc(100vh - 64px)",
         [theme.breakpoints.down("md")]: {
             width: "100%"
         },
+        paddingBottom: "10vh"
     },
     headline: {
         textAlign: "center",
@@ -210,7 +211,10 @@ export default function Profile() {
                         <Grid container item xs = {12} md = {5}
                         justify = "center"
                         >
-                            <Card className={classes.userPanelCard}>
+                            <Card
+                            square
+                            raised
+                            className={classes.userPanelCard}>
                                 <CardHeader
                                     title="Owner Since"
                                     subheader={placeholderProfile.joinDate}

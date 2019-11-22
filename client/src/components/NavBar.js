@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, {  useState } from "react";
 
 import {
     AppBar,
@@ -25,7 +25,11 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1
     },
     root: {
-        backgroundColor: "#2e363c"
+        backgroundColor: "#2e363c",
+        [theme.breakpoints.up("lg")]:{
+            paddingLeft: "20vw",
+            paddingRight: "20vw",
+        }
     },
     title: {
         flexGrow: 1
