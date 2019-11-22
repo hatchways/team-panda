@@ -140,7 +140,7 @@ export default function Profile() {
 
     return (
         <div className={classes.root}>
-            <Paper className={classes.container} square elevation = {5}>
+            <Paper className={classes.container} square elevation={5}>
                 <Grid className={classes.summary}>
                     <div
                         className={classes.profileBg}
@@ -206,15 +206,13 @@ export default function Profile() {
                     />
                 </Tabs>
                 <TabPanel value={activeTab} index={0}>
-                    <Grid container
-                    >
-                        <Grid container item xs = {12} md = {5}
-                        justify = "center"
-                        >
+                    <Grid container>
+                        <Grid container item xs={12} md={5} justify="center">
                             <Card
-                            square
-                            raised
-                            className={classes.userPanelCard}>
+                                square
+                                raised
+                                className={classes.userPanelCard}
+                            >
                                 <CardHeader
                                     title="Owner Since"
                                     subheader={placeholderProfile.joinDate}
@@ -231,9 +229,8 @@ export default function Profile() {
                                 />
                             </Card>
                         </Grid>
-                        <Grid container item xs = {12} md = {7}
-                        >
-                            <div className = {classes.overview}>
+                        <Grid container item xs={12} md={7}>
+                            <div className={classes.overview}>
                                 <Typography variant="h4">Overview</Typography>
                                 <Typography variant="body1">
                                     {placeholderProfile.overview}
@@ -254,19 +251,18 @@ export default function Profile() {
                             <Typography variant="button">Add Pet</Typography>
                         </PrimaryButton>
                         <div className={classes.petList}>
-                            {placeholderProfile.pets.map((pet, i)=> {
+                            {placeholderProfile.pets.map((pet, i) => {
                                 return (
                                     <div
-                                        key = {i}
-                                    className={classes.petListItem}>
+                                        key={i}
+                                        className={classes.petListItem}
+                                    >
                                         <Avatar
                                             className={classes.petProfilePic}
                                             alt="pet-profile-pic"
                                             src={pet.profilePic}
                                         />
-                                        <Link
-
-                                            >
+                                        <Link>
                                             <Typography variant="subtitle2">
                                                 {pet.name}
                                             </Typography>
