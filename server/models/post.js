@@ -24,6 +24,9 @@ const post = (sequelize, DataTypes) => {
         },
         type: {
             type: DataTypes.STRING
+        },
+        content: {
+            type: DataTypes.TEXT
         }
     });
 
