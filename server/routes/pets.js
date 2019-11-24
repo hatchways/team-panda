@@ -47,13 +47,61 @@ module.exports.petsOwners = auth => {
         }
     );
 
+    petsOwnerRouter.put(
+        "/:petId/edit",
+        auth.authenticate("jwt", { session: false }),
+        async (req, res, next) => {
+            const { Pet, Post, PetTag, Tag } = models;
+            const { petId } = req.params;
+            const { name, about, birthdate, tags, animal } = req.body;
+            try {
+                const pet = await Pet.findByPk(petId);
+                let petProfile = {};
+                let updatedTags = [];
+                if (name) petProfile.name = name;
+                if (about) petProfile.about = about;
+                if (birthdate) petProfile.birthdate = birthdate;
+                if (tags) {
+                    // find or create a new tag in tag table
+                    // then set the association between a pet and tags
+                    let tagItems = tags.map(tag => ({ title: tag }));
+                    let createdTags = await Promise.all(
+                        tagItems.map(tagItem => {
+                            return Tag.findOrCreate({
+                                where: tagItem,
+                                defaults: tagItem
+                            });
+                        })
+                    );
+                    createdTags = createdTags.map(created => created[0]);
+                    updatedTags = await pet.setTags(createdTags);
+                }
+                if (animal) petProfile.animal = animal;
+                const [updatedCount, updatedData] = await Pet.update(
+                    petProfile,
+                    {
+                        where: { id: petId },
+                        returning: true,
+                        plaing: true
+                    }
+                );
+                const updatedPetProfile = (updatedData && updatedData[0]) || {};
+                let data = { profile: updatedPetProfile, tags };
+                res.status(200).send(data);
+            } catch (error) {
+                next(error);
+            }
+        }
+    );
+
     //public route: get pet details and their posts
     petsOwnerRouter.get("/:petId", async (req, res, next) => {
         const { Pet, Post } = models;
         const { petId } = req.params;
         try {
-            //TODO: finish
-            const petAndPosts = await Pet.findByPk(petId, { include: [Post] });
+            const petAndPosts = await Pet.findByPk(petId, {
+                include: [{ model: Post, as: "post" }]
+            });
             res.status(200).send(petAndPosts);
         } catch (error) {
             next(error);
@@ -66,7 +114,7 @@ module.exports.petsOwners = auth => {
         auth.authenticate("jwt-param-id", { session: false }),
         upload.single("postImage"),
         async (req, res, next) => {
-            const { Pet, Post } = models;
+            const { Post } = models;
             const { petId } = req.params;
             const { caption, content } = req.body;
             try {
@@ -85,13 +133,14 @@ module.exports.petsOwners = auth => {
         }
     );
 
+    //private route for a user to edit their pet's post
     petsOwnerRouter.put(
         "/:petId/posts/:postId",
         auth.authenticate("jwt-param-id", { session: false }),
         upload.single("postImage"),
         async (req, res, next) => {
-            const { Pet, Post } = models;
-            const { petId, postId } = req.params;
+            const {  Post } = models;
+            const {  postId } = req.params;
             const { caption, content } = req.body;
             try {
                 let editContent = {
