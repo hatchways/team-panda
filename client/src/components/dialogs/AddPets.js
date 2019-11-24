@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import PrimaryButton from "../PrimaryButton";
 import Dialog from "@material-ui/core/Dialog";
@@ -11,20 +10,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { createPet } from "../../utils/petService";
 import PetImageDropZone from "../ImageDropZone";
 
-const useStyles = makeStyles(theme => ({
-    root: {},
-    container: {},
-    textField: {},
-
-    displayName: {},
-    buttonColor: {
-        background: theme.gradient
-    }
-}));
-
 export default function AddPetsDialog(props) {
     const [open, setOpen] = React.useState(false);
-
+    const { classes } = { ...props };
     const [name, setName] = React.useState("");
     const [animal, setAnimal] = React.useState("");
     const [dateOfBirth, setDOB] = React.useState("");
@@ -43,7 +31,6 @@ export default function AddPetsDialog(props) {
         profilePic: setProfilePic
     };
 
-    const classes = props.classes;
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -85,7 +72,7 @@ export default function AddPetsDialog(props) {
                         label="Pet's Name"
                         value={name}
                         onChange={handleChange("name")}
-                        className={props.classes.textField}
+                        className={classes.textField}
                         variant="outlined"
                         fullWidth
                         margin="dense"
@@ -96,7 +83,7 @@ export default function AddPetsDialog(props) {
                         id="animal"
                         label="Animal Type"
                         value={animal}
-                        className={props.classes.textField}
+                        className={classes.textField}
                         onChange={handleChange("animal")}
                         variant="outlined"
                         fullWidth
@@ -109,7 +96,7 @@ export default function AddPetsDialog(props) {
                         default="2019-12-09"
                         label="Date of Birth"
                         value={dateOfBirth}
-                        className={props.classes.textField}
+                        className={classes.textField}
                         onChange={handleChange("dateOfBirth")}
                         variant="outlined"
                         fullWidth
@@ -123,7 +110,7 @@ export default function AddPetsDialog(props) {
                         id="about"
                         label="Pet's About Me"
                         value={about}
-                        className={props.classes.textField}
+                        className={classes.textField}
                         onChange={handleChange("about")}
                         variant="outlined"
                         multiline
