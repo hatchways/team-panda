@@ -13,6 +13,7 @@ import ImageDropZone from "../ImageDropZone";
 
 export default function UpdateProfileDialog(props) {
     const [open, setOpen] = React.useState(false);
+    const { classes } = { ...props };
     const { user, setUser } = useAuth();
     const [location, setLocation] = React.useState(user.location);
     const [introduction, setIntroduction] = React.useState(user.introduction);
@@ -42,7 +43,6 @@ export default function UpdateProfileDialog(props) {
         }
     }, [user]);
 
-    const classes = props.classes;
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -73,10 +73,9 @@ export default function UpdateProfileDialog(props) {
                 onClick={handleClickOpen}
                 type="button"
                 variant="contained"
-                color="secondary"
                 size="medium"
                 style={{ marginLeft: "50" }}
-                className={props.classes.editButton}
+                className={classes.editButton}
             >
                 <Typography color="textPrimary" variant="button">
                     Edit
@@ -133,7 +132,6 @@ export default function UpdateProfileDialog(props) {
                     <Button
                         type="button"
                         variant="contained"
-                        color="secondary"
                         size="medium"
                         onClick={handleSubmit}
                     >
