@@ -47,6 +47,8 @@ module.exports.petsOwners = auth => {
         }
     );
 
+    // PUT /users/:userId/pets/:petId/edit
+    //for a user to update their pet's profile page
     petsOwnerRouter.put(
         "/:petId/edit",
         auth.authenticate("jwt", { session: false }),
@@ -94,6 +96,7 @@ module.exports.petsOwners = auth => {
         }
     );
 
+    // GET /users/:userId/pets/:petId
     //public route: get pet details and their posts
     petsOwnerRouter.get("/:petId", async (req, res, next) => {
         const { Pet, Post } = models;
@@ -108,6 +111,7 @@ module.exports.petsOwners = auth => {
         }
     });
 
+    // POST /users/:userId/pets/:petId/posts/new
     //private route for a user to create a post for their pet
     petsOwnerRouter.post(
         "/:petId/posts/new",
@@ -133,6 +137,7 @@ module.exports.petsOwners = auth => {
         }
     );
 
+    // PUT /users/:userId/pets/:petId/posts/:postId
     //private route for a user to edit their pet's post
     petsOwnerRouter.put(
         "/:petId/posts/:postId",
