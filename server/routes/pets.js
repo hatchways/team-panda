@@ -1,7 +1,7 @@
 var express = require("express");
 const models = require("../models").default;
 const { upload } = require("../storage/config");
-
+const { CustomError } = require("../errors");
 module.exports.petsRouter = auth => {
     let petsRouter = express.Router();
     petsRouter.get(
@@ -84,7 +84,7 @@ module.exports.petsOwners = auth => {
                     {
                         where: { id: petId },
                         returning: true,
-                        plaing: true
+                        plain: true
                     }
                 );
                 const updatedPetProfile = (updatedData && updatedData[0]) || {};
@@ -105,6 +105,7 @@ module.exports.petsOwners = auth => {
             const petAndPosts = await Pet.findByPk(petId, {
                 include: [{ model: Post, as: "post" }]
             });
+            if (!petAndPosts) throw new CustomError("Pet does not exist");
             res.status(200).send(petAndPosts);
         } catch (error) {
             next(error);
@@ -115,7 +116,7 @@ module.exports.petsOwners = auth => {
     //private route for a user to create a post for their pet
     petsOwnerRouter.post(
         "/:petId/posts/new",
-        auth.authenticate("jwt-param-id", { session: false }),
+        auth.authenticate("jwt", { session: false }),
         upload.single("postImage"),
         async (req, res, next) => {
             const { Post } = models;
@@ -141,11 +142,11 @@ module.exports.petsOwners = auth => {
     //private route for a user to edit their pet's post
     petsOwnerRouter.put(
         "/:petId/posts/:postId",
-        auth.authenticate("jwt-param-id", { session: false }),
+        auth.authenticate("jwt", { session: false }),
         upload.single("postImage"),
         async (req, res, next) => {
-            const {  Post } = models;
-            const {  postId } = req.params;
+            const { Post } = models;
+            const { postId } = req.params;
             const { caption, content } = req.body;
             try {
                 let editContent = {
