@@ -1,7 +1,22 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles(theme => ({
+    previewContainerProps: {
+        width: "30%",
+        height: "auto",
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
+    previewProps: {
+        width: "100%",
+        height: "auto",
+        display: "block"
+    }
+}));
 export default function ImageDropZone(props) {
+    const classes = useStyles();
     const [imgs, setImgs] = React.useState([]);
     const { getRootProps, getInputProps } = useDropzone({
         accept: "image/*",
@@ -18,20 +33,9 @@ export default function ImageDropZone(props) {
         }
     });
 
-    const previewContainerProps = {
-        width: "30%",
-        height: "auto",
-        marginLeft: "auto",
-        marginRight: "auto"
-    };
-    const previewProps = {
-        width: "100%",
-        height: "auto",
-        display: "block"
-    };
     const preview = imgs.map((file, i) => (
-        <div style={previewContainerProps} key={i}>
-            <img src={file.preview} style={previewProps}></img>
+        <div style={classes.previewContainerProps} key={i}>
+            <img src={file.preview} style={classes.previewProps}></img>
         </div>
     ));
 
