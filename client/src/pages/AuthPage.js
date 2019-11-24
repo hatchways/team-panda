@@ -1,34 +1,32 @@
 import React from "react";
 import AuthForm from "../components/AuthForm";
 import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     root: {
+        height: "calc(100vh - 64px)",
+        overflow: "hidden"
+    },
+
+    authPictureContainer: {
         display: "flex",
-        justifyContent: "space-around",
-        alignItems: "flex-start",
-        padding: 20,
-        background: "url(auth-picture.png) no-repeat left",
-        height: "calc(100vh - 64px)"
+        justifyContent: "flex-start",
+        height: "100%",
     },
-    container: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start"
+    authPicture:{
+        background: "url(auth-picture.png)",
+        height: "100%",
+        width: "100%",
+        backgroundSize: "cover",
+        backgroundPosition: "center"
     },
-    authButton: {
-        width: "50vw",
-        display: "flex",
-        justifyContent: "flex-end"
+    container:{
+        height: "100%"
     },
-    authPicture: {
-        height: "70vh"
-    },
-    authContainer: {
-        padding: "10px 50px 10px 10px"
-    },
-    margin: {
-        margin: theme.spacing(1)
+    authForm:{
+        paddingLeft: "10%",
+        paddingTop: "3%"
     }
 }));
 
@@ -37,9 +35,20 @@ export default function AuthPage({ name, displayName }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.container}>
-                <AuthForm formName={name} displayName={displayName} />
-            </div>
+            <Grid container className = {classes.container} >
+                <Hidden xsDown>
+                    <Grid item md={5} className = {classes.container
+                    }>
+                        <Grid item className = {classes.authPictureContainer}>
+                            <div className = {classes.authPicture}/>
+                        </Grid>
+                    </Grid>
+                </Hidden>
+                <Grid item xs = {12} md={7} className = {classes.authForm}>
+                    <AuthForm formName={name} displayName={displayName}
+                    />
+                </Grid>
+            </Grid>
         </div>
     );
 }

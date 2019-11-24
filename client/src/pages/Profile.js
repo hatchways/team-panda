@@ -27,7 +27,10 @@ const useStyles = makeStyles(theme => ({
     },
     container: {
         width: "80vw",
-        minHeight: "calc(100vh - 64px)"
+        minHeight: "calc(100vh - 64px)",
+        [theme.breakpoints.down("md")]: {
+            width: "100%"
+        },
     },
     headline: {
         textAlign: "center",
@@ -36,7 +39,8 @@ const useStyles = makeStyles(theme => ({
     headlineContainer: {
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        margin: "30px 0"
     },
     profilePic: {
         position: "absolute",
@@ -56,7 +60,8 @@ const useStyles = makeStyles(theme => ({
     },
     summaryButtons: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        margin: "30px 0"
     },
     editButton: {
         marginLeft: 50
@@ -77,10 +82,15 @@ const useStyles = makeStyles(theme => ({
         justifyContent: "center"
     },
     userPanelCard: {
-        width: 250
+        width: 250,
+        margin: 20,
+        [theme.breakpoints.down("xs")]: {
+            width: "100%",
+            textAlign: "center"
+        }
     },
     overview: {
-        flex: 5
+        margin: "20px 20px"
     },
     petProfilePic: {
         height: 70,
@@ -88,7 +98,8 @@ const useStyles = makeStyles(theme => ({
     },
     petList: {
         display: "flex",
-        margin: "20px 0"
+        padding: "50px 5% 40px 10%",
+        flexWrap: "wrap"
     },
     petListItem: {
         margin: 20,
@@ -98,7 +109,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center"
     },
     buttonVertMargin: {
-        margin: "20px 0",
+        margin: "20px 20px",
         background: theme.gradient
     }
 }));
@@ -129,7 +140,7 @@ export default function Profile() {
 
     return (
         <div className={classes.root}>
-            <Paper className={classes.container}>
+            <Paper className={classes.container} square elevation = {5}>
                 <Grid className={classes.summary}>
                     <div
                         className={classes.profileBg}
@@ -161,7 +172,7 @@ export default function Profile() {
                         <PrimaryButton
                             onClick={handleMessageClick}
                             variant="contained"
-                            size="medium"
+                            size="large"
                             type="button"
                         >
                             <Typography variant="button">Message</Typography>
@@ -175,6 +186,7 @@ export default function Profile() {
                     onChange={handleChange}
                     indicatorColor="primary"
                     centered
+                    variant="fullWidth"
                 >
                     <Tab
                         label={`About ${user.name || placeholderProfile.name}`}
@@ -184,8 +196,11 @@ export default function Profile() {
                     />
                 </Tabs>
                 <TabPanel value={activeTab} index={0}>
-                    <div className={classes.userPanel}>
-                        <div className={classes.userPanelCardContainer}>
+                    <Grid container
+                    >
+                        <Grid container item xs = {12} md = {5}
+                        justify = "center"
+                        >
                             <Card className={classes.userPanelCard}>
                                 <CardHeader
                                     title="Owner Since"
@@ -208,25 +223,27 @@ export default function Profile() {
                                     subheader={placeholderProfile.pets.length}
                                 />
                             </Card>
-                        </div>
-                        <div className={classes.overview}>
-                            <div>
+                        </Grid>
+                        <Grid container item xs = {12} md = {7}
+                        >
+                            <div className = {classes.overview}>
                                 <Typography variant="h4">Overview</Typography>
-                                <Typography variant="p">
-                                    {user.overview ||
-                                        placeholderProfile.overview}
+                                <Typography variant="body1">
+                                    {user.overview || placeholderProfile.overview}
                                 </Typography>
                             </div>
-                        </div>
-                    </div>
+                        </Grid>
+                    </Grid>
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
                     <div className={classes.petsPanel}>
                         <AddPetsButton userId={user.id} classes={classes} />
                         <div className={classes.petList}>
-                            {placeholderProfile.pets.map(pet => {
+                            {placeholderProfile.pets.map((pet, i)=> {
                                 return (
-                                    <div className={classes.petListItem}>
+                                    <div
+                                        key = {i}
+                                    className={classes.petListItem}>
                                         <Avatar
                                             className={classes.petProfilePic}
                                             alt="pet-profile-pic"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MuiThemeProvider } from "@material-ui/core";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
@@ -46,6 +46,7 @@ function App() {
         <MuiThemeProvider theme={theme}>
             <BrowserRouter>
                 <NavBar />
+                {user ? <Redirect to = "/mypets" /> : ""}
                 <Switch>
                     {user ? (
                         <Route exact path="/mypets" component={Profile} />
