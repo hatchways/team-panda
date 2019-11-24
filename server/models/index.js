@@ -16,12 +16,16 @@ const models = {
     Pet: sequelize.import("./pet"),
     UserProfile: sequelize.import("./userProfile"),
     Post: sequelize.import("./post"),
-    Followed_pet: sequelize.import("./followed_pet")
+    Followed_pet: sequelize.import("./followed_pet"),
+    Tag: sequelize.import('./tag')
 };
 Object.keys(models).forEach(key => {
     if ("associate" in models[key]) {
         models[key].associate(models);
     }
 });
+
+models.PetTag = sequelize.model('pet_tag')
+
 export { sequelize };
 export default models;
