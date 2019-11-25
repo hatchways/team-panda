@@ -1,4 +1,5 @@
 import axios from "axios";
+import _ from "lodash";
 
 export const authLogIn = async credentials => {
     const res = await axios.post("/users/login", credentials);
@@ -21,10 +22,10 @@ export const authLogOut = async () => {
     const res = await axios.post("/users/logout");
     return res.data;
 };
-
-export const authRequest = async (url, options) => {
+const throttledAxios = _.throttle(axios, 100);
+export const authRequest = (url, options) => {
     //authenticated request wrapper
-    return axios(url, {
+    return throttledAxios(url, {
         method: options.method,
         headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`

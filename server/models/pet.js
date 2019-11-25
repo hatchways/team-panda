@@ -27,10 +27,11 @@ const pet = (sequelize, DataTypes) => {
             },
             about: {
                 type: DataTypes.STRING
-            }
+            },
         },
         {
-            underscored: true
+            underscored: true,
+            timestamps: false,
         }
     );
 
@@ -49,6 +50,11 @@ const pet = (sequelize, DataTypes) => {
             as: "followers",
             foreignKey: "pet_id"
         });
+
+        Pet.belongsToMany(models.Tag, {
+            through: "pet_tag"
+        });
+
     };
 
     return Pet;

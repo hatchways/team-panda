@@ -26,11 +26,12 @@ const useStyles = makeStyles(theme => ({
         justifyContent: "center"
     },
     container: {
-        width: "80vw",
+        width: "60vw",
         minHeight: "calc(100vh - 64px)",
         [theme.breakpoints.down("md")]: {
             width: "100%"
         },
+        paddingBottom: "10vh"
     },
     headline: {
         textAlign: "center",
@@ -140,7 +141,7 @@ export default function Profile() {
 
     return (
         <div className={classes.root}>
-            <Paper className={classes.container} square elevation = {5}>
+            <Paper className={classes.container} square elevation={5}>
                 <Grid className={classes.summary}>
                     <div
                         className={classes.profileBg}
@@ -196,12 +197,13 @@ export default function Profile() {
                     />
                 </Tabs>
                 <TabPanel value={activeTab} index={0}>
-                    <Grid container
-                    >
-                        <Grid container item xs = {12} md = {5}
-                        justify = "center"
-                        >
-                            <Card className={classes.userPanelCard}>
+                    <Grid container>
+                        <Grid container item xs={12} md={5} justify="center">
+                            <Card
+                                square
+                                raised
+                                className={classes.userPanelCard}
+                            >
                                 <CardHeader
                                     title="Owner Since"
                                     subheader={
@@ -224,9 +226,8 @@ export default function Profile() {
                                 />
                             </Card>
                         </Grid>
-                        <Grid container item xs = {12} md = {7}
-                        >
-                            <div className = {classes.overview}>
+                        <Grid container item xs={12} md={7}>
+                            <div className={classes.overview}>
                                 <Typography variant="h4">Overview</Typography>
                                 <Typography variant="body1">
                                     {user.overview || placeholderProfile.overview}
@@ -239,11 +240,12 @@ export default function Profile() {
                     <div className={classes.petsPanel}>
                         <AddPetsButton userId={user.id} classes={classes} />
                         <div className={classes.petList}>
-                            {placeholderProfile.pets.map((pet, i)=> {
+                            {placeholderProfile.pets.map((pet, i) => {
                                 return (
                                     <div
-                                        key = {i}
-                                    className={classes.petListItem}>
+                                        key={i}
+                                        className={classes.petListItem}
+                                    >
                                         <Avatar
                                             className={classes.petProfilePic}
                                             alt="pet-profile-pic"

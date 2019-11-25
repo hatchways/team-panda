@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 import {
     AppBar,
@@ -10,7 +10,7 @@ import {
     MenuItem,
     Badge
 } from "@material-ui/core";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
 import { makeStyles } from "@material-ui/styles";
 import PrimaryButton from "./PrimaryButton";
@@ -25,7 +25,11 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1
     },
     root: {
-        backgroundColor: "#2e363c"
+        backgroundColor: "#2e363c",
+        [theme.breakpoints.up("lg")]: {
+            paddingLeft: "20vw",
+            paddingRight: "20vw"
+        }
     },
     title: {
         flexGrow: 1
@@ -116,45 +120,41 @@ export default function NavBar(props) {
 
     const renderLoggedOutMobileButtons = () => (
         <div>
-            <MenuItem component = {Link} to = "/signup">
+            <MenuItem component={Link} to="/signup">
                 <p>Sign Up</p>
             </MenuItem>
-            <MenuItem component = {Link} to = "/login">
+            <MenuItem component={Link} to="/login">
                 <p>Log In</p>
             </MenuItem>
         </div>
     );
 
     const renderLoggedInMobileButtons = () => (
-
-            <div>
-                <MenuItem component = {Link} to = "/notifications">
-                    <IconButton
-                        color="inherit"
-                    >
-                        {/* TODO: update notification number */}
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
-                    <p>Notifications</p>
-                </MenuItem>
-                <MenuItem component = {Link} to = "/feed">
-                    <IconButton color="inherit">
-                        <Badge badgeContent={11} color="secondary">
-                            <DynamicFeedIcon />
-                        </Badge>
-                    </IconButton>
-                    <p>Feed</p>
-                </MenuItem>
-                <MenuItem component = {Link} to = "/mypets">
-                    <IconButton color="inherit" >
-                        <AccountCircle />
-                    </IconButton>
-                    <p>My Pets</p>
-                </MenuItem>
-            </div>
-
+        <div>
+            <MenuItem component={Link} to="/notifications">
+                <IconButton color="inherit">
+                    {/* TODO: update notification number */}
+                    <Badge badgeContent={4} color="secondary">
+                        <NotificationsIcon />
+                    </Badge>
+                </IconButton>
+                <p>Notifications</p>
+            </MenuItem>
+            <MenuItem component={Link} to="/feed">
+                <IconButton color="inherit">
+                    <Badge badgeContent={11} color="secondary">
+                        <DynamicFeedIcon />
+                    </Badge>
+                </IconButton>
+                <p>Feed</p>
+            </MenuItem>
+            <MenuItem component={Link} to="/mypets">
+                <IconButton color="inherit">
+                    <AccountCircle />
+                </IconButton>
+                <p>My Pets</p>
+            </MenuItem>
+        </div>
     );
 
     const renderMobileMenu = (
@@ -166,7 +166,9 @@ export default function NavBar(props) {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            {user ? renderLoggedInMobileButtons(): renderLoggedOutMobileButtons()}
+            {user
+                ? renderLoggedInMobileButtons()
+                : renderLoggedOutMobileButtons()}
         </Menu>
     );
 

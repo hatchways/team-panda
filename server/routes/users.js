@@ -81,10 +81,17 @@ module.exports = auth => {
         "/:userId",
         auth.authenticate("jwt", { session: false }),
         (req, res, next) => {
-            models.UserProfile.findOne({ where: { userId: req.params.userId } })
+            models.UserProfile.findOne({
+                where: { user_id: req.params.userId }
+            })
                 .then(userProfile => {
                     if (userProfile) {
-                        return res.status(200).send(userProfile);
+                        return res.status(200).json({
+                            email: req.user.email,
+                            id: req.user.id,
+                            name: req.user.name,
+                            profile: userProfile
+                        });
                     }
                     res.status(404).send();
                 })
