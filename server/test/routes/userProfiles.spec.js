@@ -184,7 +184,7 @@ describe("/users/ profile routes", () => {
                 .set("Authorization", `Bearer ${jwtRequest}`)
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.eql(testUserProfile);
+                    res.body.should.eql({profile: testUserProfile, id: testUser.id, email: testUser.email, name: testUser.name});
                     done();
                 });
         });
