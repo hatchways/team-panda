@@ -15,6 +15,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Snackbar } from "@material-ui/core";
 import { MySnackbarContentWrapper } from "./components/Snackbar";
 
+import jwt from "jsonwebtoken";
+
 const useStyles = makeStyles(theme => ({
     margin: {
         margin: theme.spacing(1)
@@ -22,8 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function App() {
-    const { user } = useAuth();
-    const { authError, setAuthError } = useAuth();
+    const { authError, setAuthError, user, getUserProfile } = useAuth();
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
@@ -41,12 +42,20 @@ function App() {
             handleOpen();
         }
     });
+    useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (token) {
+            const decodedToken = jwt.decode(token);
+            const userId = decodedToken.id;
+            getUserProfile(userId);
+        }
+    }, []);
 
     return (
         <MuiThemeProvider theme={theme}>
             <BrowserRouter>
                 <NavBar />
-                {user ? <Redirect to = "/mypets" /> : ""}
+                {user ? <Redirect to="/mypets" /> : ""}
                 <Switch>
                     {user ? (
                         <Route exact path="/mypets" component={Profile} />
