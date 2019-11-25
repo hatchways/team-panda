@@ -17,6 +17,7 @@ import {
 import TabPanel from "../components/TabPanel";
 import PrimaryButton from "../components/PrimaryButton";
 import AddPetsButton from "../components/dialogs/AddPets";
+import EditProfileButton from "../components/dialogs/UpdateProfile";
 import placeholderProfile from "../utils/placeholderProfile";
 
 const useStyles = makeStyles(theme => ({
@@ -134,8 +135,8 @@ export default function Profile() {
 
     const handleAddPet = () => {};
 
-    const profileBg = user["profile_bg"]
-        ? user["profile_bg"]
+    const profileBg = user["profileBg"]
+        ? user["profileBg"]
         : placeholderProfile.profileBg;
 
     return (
@@ -154,7 +155,7 @@ export default function Profile() {
                         className={classes.profilePic}
                         alt="profile-pic"
                         src={
-                            user["profile_pic"] || placeholderProfile.profilePic
+                            user["profilePic"] || placeholderProfile.profilePic
                         }
                     />
                     <Typography variant="h2" className={classes.name}>
@@ -165,7 +166,7 @@ export default function Profile() {
                             variant="subtitle1"
                             className={classes.headline}
                         >
-                            {user.overview || placeholderProfile.headline}
+                            {user.introduction || placeholderProfile.headline}
                         </Typography>
                     </div>
                     <div className={classes.summaryButtons}>
@@ -178,17 +179,7 @@ export default function Profile() {
                             <Typography variant="button">Message</Typography>
                         </PrimaryButton>
                         {/* TODO don't show edit button if not own profile */}
-                        <Button
-                            onClick={handleMessageClick}
-                            type="button"
-                            variant="outlined"
-                            size="large"
-                            className={classes.editButton}
-                        >
-                            <Typography color="textPrimary" variant="button">
-                                Edit
-                            </Typography>
-                        </Button>
+                        <EditProfileButton classes={classes} />
                     </div>
                 </Grid>
                 <Tabs
@@ -215,12 +206,18 @@ export default function Profile() {
                             >
                                 <CardHeader
                                     title="Owner Since"
-                                    subheader={placeholderProfile.joinDate}
+                                    subheader={
+                                        user.createdAt ||
+                                        placeholderProfile.joinDate
+                                    }
                                 />
                                 <Divider />
                                 <CardHeader
                                     title="Location"
-                                    subheader={placeholderProfile.location}
+                                    subheader={
+                                        user.location ||
+                                        placeholderProfile.location
+                                    }
                                 />
                                 <Divider />
                                 <CardHeader
@@ -233,7 +230,7 @@ export default function Profile() {
                             <div className={classes.overview}>
                                 <Typography variant="h4">Overview</Typography>
                                 <Typography variant="body1">
-                                    {placeholderProfile.overview}
+                                    {user.overview || placeholderProfile.overview}
                                 </Typography>
                             </div>
                         </Grid>
@@ -241,15 +238,7 @@ export default function Profile() {
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
                     <div className={classes.petsPanel}>
-                        <PrimaryButton
-                            onClick={handleAddPet}
-                            variant="contained"
-                            size="large"
-                            type="button"
-                            className={classes.buttonVertMargin}
-                        >
-                            <Typography variant="button">Add Pet</Typography>
-                        </PrimaryButton>
+                        <AddPetsButton userId={user.id} classes={classes} />
                         <div className={classes.petList}>
                             {placeholderProfile.pets.map((pet, i) => {
                                 return (

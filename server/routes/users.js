@@ -4,6 +4,7 @@ const models = require("../models").default;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { AuthenticationError } = require("../errors");
+const { upload } = require("../storage/config");
 
 module.exports = auth => {
     router.use("/:userId/pets", require("./pets").petsOwners(auth));
@@ -54,14 +55,23 @@ module.exports = auth => {
     router.put(
         "/:userId",
         auth.authenticate("jwt-param-id", { session: false }),
+        upload.fields([
+            {
+                name: "profilePic",
+                maxCount: 1
+            },
+            {
+                name: "profileBg",
+                maxCount: 1
+            }
+        ]),
         (req, res, next) => {
             let updatedProfile = req.body;
             updatedProfile.userId = req.params.userId;
+            findImages(req, updatedProfile);
             models.UserProfile.updateById(updatedProfile.userId, updatedProfile)
                 .then(() => {
-                    res.status(200).send({
-                        success: "User Profile was updated"
-                    });
+                    res.status(200).send(updatedProfile);
                 })
                 .catch(next);
         }
@@ -111,4 +121,13 @@ function createJWTResponse(user) {
         name: user.name,
         token: jwt.sign({ id: user.id }, "tempSecret")
     };
+}
+
+function findImages(req, profile) {
+    if (req.files && req.files["profilePic"]) {
+        profile.profilePic = req.files["profilePic"][0].location;
+    }
+    if (req.files && req.files["profileBg"]) {
+        profile.profileBg = req.files["profileBg"][0].location;
+    }
 }

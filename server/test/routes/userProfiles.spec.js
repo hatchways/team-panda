@@ -150,7 +150,7 @@ describe("/users/ profile routes", () => {
                 });
         });
 
-        it("should return 200 status and success message if jwt id and param id match", done => {
+        it("should return 200 status and updated user if jwt id and param id match", done => {
             UserProfile.updateById.resolves({});
             chai.request(app)
                 .put(`/users/${testUser.id}`)
@@ -158,9 +158,10 @@ describe("/users/ profile routes", () => {
                 .send(newInfo)
                 .end((err, res) => {
                     res.should.have.status(200);
+                    res.body.should.have.property("location").eql("New place");
                     res.body.should.have
-                        .property("success")
-                        .eql("User Profile was updated");
+                        .property("overview")
+                        .eql("This is a different overview");
                     done();
                 });
         });

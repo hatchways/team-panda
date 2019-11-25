@@ -56,6 +56,10 @@ const user = (sequelize, DataTypes) => {
             hooks: {
                 afterValidate: (usr, options) => {
                     return hashPass(usr);
+                },
+
+                afterCreate: (usr, options) => {
+                    return usr.createUser_profile({ userId: usr.id });
                 }
             },
             timestamps: false
@@ -66,6 +70,10 @@ const user = (sequelize, DataTypes) => {
         User.hasMany(models.Pet, {
             foreignKey: "ownerId",
             as: "pets"
+        });
+
+        User.hasOne(models.UserProfile, {
+            foreignKey: "id"
         });
     };
     return User;
