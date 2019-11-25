@@ -22,10 +22,10 @@ export const authLogOut = async () => {
     const res = await axios.post("/users/logout");
     return res.data;
 };
-const throttledAxios = _.throttle(axios, 100);
+
 export const authRequest = (url, options) => {
     //authenticated request wrapper
-    return throttledAxios(url, {
+    return axios(url, {
         method: options.method,
         headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`
