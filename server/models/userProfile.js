@@ -6,7 +6,8 @@ const userProfile = (sequelize, DataTypes) => {
         {
             //createdAt is a collum which was generated aut by sequelize
             location: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                defaultValue: "Toronto, Canada"
             },
             userId: {
                 type: DataTypes.INTEGER,
@@ -15,15 +16,17 @@ const userProfile = (sequelize, DataTypes) => {
                 primaryKey: true
             },
             overview: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                defaultValue: "This is my overview"
             },
             introduction: {
+                type: DataTypes.STRING,
+                defaultValue: "This is my introduction"
+            },
+            profilePic: {
                 type: DataTypes.STRING
             },
-            profile_pic: {
-                type: DataTypes.STRING
-            },
-            profile_bg: {
+            profileBg: {
                 type: DataTypes.STRING
             }
         },
