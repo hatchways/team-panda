@@ -154,10 +154,9 @@ module.exports.petsOwners = auth => {
                     content
                 };
                 if (req.file) editContent.image = req.file.location;
-                const editedPost = await Post.update(editContent, {
-                    where: { id: postId }
-                });
-                res.status(201).send(editedPost);
+                const post = await Post.findByPk(postId);
+                const data = await post.update(editContent);
+                res.status(201).send(data);
             } catch (error) {
                 next(error);
             }
