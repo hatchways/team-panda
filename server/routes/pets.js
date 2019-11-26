@@ -52,6 +52,7 @@ module.exports.petsOwners = auth => {
     petsOwnerRouter.put(
         "/:petId/edit",
         auth.authenticate("jwt", { session: false }),
+        upload.single("profilePic"),
         async (req, res, next) => {
             const { Pet, Post, PetTag, Tag } = models;
             const { petId } = req.params;
@@ -87,8 +88,7 @@ module.exports.petsOwners = auth => {
                         plain: true
                     }
                 );
-                const updatedPetProfile = (updatedData && updatedData[0]) || {};
-                let data = { profile: updatedPetProfile, tags };
+                let data = { profile: updatedData || {}, tags };
                 res.status(200).send(data);
             } catch (error) {
                 next(error);
@@ -117,7 +117,7 @@ module.exports.petsOwners = auth => {
     petsOwnerRouter.post(
         "/:petId/posts/new",
         auth.authenticate("jwt", { session: false }),
-        upload.single("postImage"),
+        upload.single("image"),
         async (req, res, next) => {
             const { Post } = models;
             const { petId } = req.params;
