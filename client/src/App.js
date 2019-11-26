@@ -10,6 +10,7 @@ import AuthProvider, { useAuth } from "./utils/AuthProvider";
 import AuthPage from "./pages/AuthPage";
 import NavBar from "./components/NavBar";
 import Profile from "./pages/Profile";
+import PetProfile from "./pages/PetProfile";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Snackbar } from "@material-ui/core";
@@ -62,6 +63,11 @@ function App() {
                     ) : (
                         ""
                     )}
+                    <Route
+                        exact
+                        path="/users/:ownerId/pets/:petId"
+                        component={PetProfile}
+                    />
                     <Route exact path="/" component={LandingPage} />
                     <Route exact path="/login">
                         <AuthPage name="login" displayName="Log In" />
