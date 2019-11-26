@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth } from "../utils/AuthProvider";
+import { getUsersPets } from "../utils/petService";
 import {
     Avatar,
     Tabs,
@@ -16,7 +17,7 @@ import {
 } from "@material-ui/core";
 import TabPanel from "../components/TabPanel";
 import PrimaryButton from "../components/PrimaryButton";
-import AddPetsButton from "../components/dialogs/AddPets";
+import AddPetsButton from "../components/dialogs/AddOrEditPet";
 import EditProfileButton from "../components/dialogs/UpdateProfile";
 import placeholderProfile from "../utils/placeholderProfile";
 
@@ -119,9 +120,17 @@ export default function Profile() {
     const classes = useStyles();
     const { user, getUserProfile } = useAuth();
     const [activeTab, setActiveTab] = useState(0);
+    const [pets, setPets] = useState([]);
     useEffect(() => {
         getUserProfile(user.id);
+        getUsersPets(user.id).then(petList => {
+            setPets(petList);
+        });
     }, []);
+
+    const onCreatePet = newPet => {
+        setPets([newPet, ...pets]);
+    };
 
     const handleChange = (event, newValue) => {
         setActiveTab(newValue);
@@ -230,7 +239,8 @@ export default function Profile() {
                             <div className={classes.overview}>
                                 <Typography variant="h4">Overview</Typography>
                                 <Typography variant="body1">
-                                    {user.overview || placeholderProfile.overview}
+                                    {user.overview ||
+                                        placeholderProfile.overview}
                                 </Typography>
                             </div>
                         </Grid>
@@ -238,9 +248,15 @@ export default function Profile() {
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
                     <div className={classes.petsPanel}>
-                        <AddPetsButton userId={user.id} classes={classes} />
+                        <AddPetsButton
+                            userId={user.id}
+                            classes={classes}
+                            pet={{}}
+                            onCreatePet={onCreatePet}
+                        />
                         <div className={classes.petList}>
-                            {placeholderProfile.pets.map((pet, i) => {
+                            {/* {placeholderProfilepets.map((pet, i) => { */}
+                            {pets.map((pet, i) => {
                                 return (
                                     <div
                                         key={i}
@@ -251,7 +267,10 @@ export default function Profile() {
                                             alt="pet-profile-pic"
                                             src={pet.profilePic}
                                         />
-                                        <Link>
+                                        <Link
+                                            underline="none"
+                                            href={`/users/${pet.ownerId}/pets/${pet.id}`}
+                                        >
                                             <Typography variant="subtitle2">
                                                 {pet.name}
                                             </Typography>
