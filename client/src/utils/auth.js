@@ -23,9 +23,9 @@ export const authLogOut = async () => {
     return res.data;
 };
 const throttledAxios = _.throttle(axios, 100);
-export const authRequest = (url, options) => {
+export const authRequest = async (url, options) => {
     //authenticated request wrapper
-    return throttledAxios(url, {
+    return axios(url, {
         method: options.method,
         headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`

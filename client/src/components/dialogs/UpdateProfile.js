@@ -11,9 +11,8 @@ import { updateProfile } from "../../utils/userProfileService";
 import { useAuth } from "../../utils/AuthProvider";
 import ImageDropZone from "../ImageDropZone";
 
-export default function UpdateProfileDialog(props) {
+export default function UpdateProfileDialog({ classes }) {
     const [open, setOpen] = React.useState(false);
-    const { classes } = { ...props };
     const { user, setUser } = useAuth();
     const [location, setLocation] = React.useState(user.location);
     const [introduction, setIntroduction] = React.useState(user.introduction);

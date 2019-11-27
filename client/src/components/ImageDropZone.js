@@ -34,8 +34,8 @@ export default function ImageDropZone(props) {
     });
 
     const preview = imgs.map((file, i) => (
-        <div style={classes.previewContainerProps} key={i}>
-            <img src={file.preview} style={classes.previewProps}></img>
+        <div className={classes.previewContainerProps} key={i}>
+            <img src={file.preview} className={classes.previewProps}></img>
         </div>
     ));
 

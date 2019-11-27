@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Typography } from "@material-ui/core";
@@ -7,18 +7,24 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { createPet } from "../../utils/petService";
+import { createPet, updatePet } from "../../utils/petService";
 import PetImageDropZone from "../ImageDropZone";
 
-export default function AddPetsDialog(props) {
+export default function AddOrEditPet({
+    classes,
+    userId,
+    update,
+    pet,
+    onCreatePet,
+    setPet
+}) {
     const [open, setOpen] = React.useState(false);
-    const { classes } = { ...props };
-    const [name, setName] = React.useState("");
-    const [animal, setAnimal] = React.useState("");
-    const [dateOfBirth, setDOB] = React.useState("");
-    const [about, setAbout] = React.useState("");
-    const [profilePic, setProfilePic] = React.useState(null);
-
+    const [name, setName] = React.useState(pet.name || "");
+    const [animal, setAnimal] = React.useState(pet.animal || "");
+    const [dateOfBirth, setDOB] = React.useState(pet.dateOfBirth || "");
+    const [about, setAbout] = React.useState(pet.about || "");
+    const [profilePic, setProfilePic] = React.useState(pet.profilePic || null);
+    const createOrUpdateLabel = update ? "Update Pet" : "Create Pet";
     const getProfilePic = img => {
         setPetForm["profilePic"](img);
     };
@@ -44,28 +50,52 @@ export default function AddPetsDialog(props) {
     };
 
     const handleSubmit = () => {
-        createPet(props.userId, {
+        let petInfo = {
             name,
             dateOfBirth,
             about,
             animal,
             profilePic
-        });
+        };
+        // console.log(petInfo);
+        if (update) {
+            updatePet(userId, pet.id, petInfo).then(updatedPet => {
+                setPet(updatedPet);
+            });
+        } else {
+            createPet(userId, petInfo).then(newPet => {
+                onCreatePet(newPet);
+            });
+        }
         handleClose();
     };
 
+    useEffect(() => {
+        for (let key of Object.keys(setPetForm)) {
+            setPetForm[key](pet[key]);
+        }
+    }, [pet]);
     return (
         <div>
-            <PrimaryButton
+            {/* <PrimaryButton
                 onClick={handleClickOpen}
                 variant="contained"
-                size="large"
+                // size="large"
                 type="button"
             >
-                <Typography variant="button">Add Pet</Typography>
-            </PrimaryButton>
+                <Typography variant="button">{createOrUpdateLabel}</Typography>
+            </PrimaryButton> */}
+            <Button
+                variant="outlined"
+                onClick={handleClickOpen}
+                className={classes.buttonGroup}
+            >
+                {createOrUpdateLabel}
+            </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle id="add-pet-dialog-title">Add a Pet</DialogTitle>
+                <DialogTitle id="add-pet-dialog-title">
+                    {createOrUpdateLabel}
+                </DialogTitle>
                 <DialogContent>
                     <TextField
                         id="name"
@@ -123,12 +153,10 @@ export default function AddPetsDialog(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <PrimaryButton
-                        variant="contained"
-                        type="button"
-                        onClick={handleSubmit}
-                    >
-                        <Typography variant="button">Add Pet</Typography>
+                    <PrimaryButton onClick={handleSubmit}>
+                        <Typography variant="button">
+                            {createOrUpdateLabel}
+                        </Typography>
                     </PrimaryButton>
                 </DialogActions>
             </Dialog>

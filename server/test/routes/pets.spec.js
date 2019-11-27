@@ -288,7 +288,7 @@ describe("Pets routes", () => {
                         })
                         .resolves([testTagDB[i]]);
                 });
-                Pet.update.resolves([1, [updatedTestPet3DB]]);
+                Pet.update.resolves([1, updatedTestPet3DB]);
                 return chai
                     .request(app)
                     .put(`/users/${testUser.id}/pets/${testPet3.id}/edit`)
