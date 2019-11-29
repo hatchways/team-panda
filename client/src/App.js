@@ -57,15 +57,7 @@ function App() {
             <BrowserRouter>
                 <NavBar />
                 <Switch>
-                    {user ? (
-                        <Route
-                            exact
-                            path="/users/:userId"
-                            component={Profile}
-                        />
-                    ) : (
-                        ""
-                    )}
+                    <Route exact path="/users/:userId" component={Profile} />
                     <Route
                         exact
                         path="/users/:ownerId/pets/:petId"

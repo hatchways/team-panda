@@ -158,10 +158,11 @@ export default function Profile({ match }) {
         return isMatch;
     };
 
-    const profileBg = user["profileBg"]
+    const profileBg = user && user["profileBg"]
         ? user["profileBg"]
         : placeholderProfile.profileBg;
-    if (authError) {
+
+    if (authError || !user) {
         return (
             <div className={classes.root}>
                 <Paper className={classes.invalidProfile} square elevation={5}>
