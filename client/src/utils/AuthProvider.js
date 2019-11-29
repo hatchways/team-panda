@@ -48,11 +48,14 @@ function useProvideAuth() {
     const getUserProfile = async id => {
         try {
             const res = await authRequest(`./users/${id}`, { method: "GET" });
-            setUser({
+            let mergedUser = {
                 ...res.data.profile,
                 ...user,
-                userProfileId: res.data.profile.id
-            });
+                userProfileId: res.data.profile.id,
+                ...res.data
+            };
+            delete mergedUser.profile;
+            setUser(mergedUser);
         } catch (error) {
             setAuthError(error.response);
         }
