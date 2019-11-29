@@ -22,8 +22,8 @@ export const authLogOut = async () => {
     const res = await axios.post("/users/logout");
     return res.data;
 };
-const throttledAxios = _.throttle(axios, 100);
-export const authRequest = async (url, options) => {
+
+export const authRequest = (url, options) => {
     //authenticated request wrapper
     return axios(url, {
         method: options.method,
