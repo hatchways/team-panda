@@ -111,9 +111,9 @@ export default function NavBar(props) {
                 type="button"
                 variant="contained"
                 component={LinkButton}
-                to="/mypets"
+                to={`/users/${user.id}`}
             >
-                <Typography variant="button">My Pets</Typography>
+                <Typography variant="button">My Profile</Typography>
             </PrimaryButton>
         </div>
     );
@@ -148,11 +148,11 @@ export default function NavBar(props) {
                 </IconButton>
                 <p>Feed</p>
             </MenuItem>
-            <MenuItem component={Link} to="/mypets">
+            <MenuItem component={Link} to={`/users/${user.id}`}>
                 <IconButton color="inherit">
                     <AccountCircle />
                 </IconButton>
-                <p>My Pets</p>
+                <p>My Profile</p>
             </MenuItem>
         </div>
     );

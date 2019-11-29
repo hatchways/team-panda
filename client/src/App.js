@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function App() {
-    const { authError, setAuthError, user, getUserProfile } = useAuth();
+    const { snackBarMsg, setSnackBarMsg, user, getUserProfile } = useAuth();
     const [open, setOpen] = useState(false);
     const classes = useStyles();
 
@@ -34,12 +34,12 @@ function App() {
     };
 
     const handleClose = () => {
-        setAuthError(null); //clear auth error
+        setSnackBarMsg(null); //clear snackbar msg
         setOpen(false);
     };
 
     useEffect(() => {
-        if (authError && !open) {
+        if (snackBarMsg && !open) {
             handleOpen();
         }
     });
@@ -56,10 +56,13 @@ function App() {
         <MuiThemeProvider theme={theme}>
             <BrowserRouter>
                 <NavBar />
-                {user ? <Redirect to="/mypets" /> : ""}
                 <Switch>
                     {user ? (
-                        <Route exact path="/mypets" component={Profile} />
+                        <Route
+                            exact
+                            path="/users/:userId"
+                            component={Profile}
+                        />
                     ) : (
                         ""
                     )}
@@ -86,12 +89,7 @@ function App() {
                         variant="error"
                         className={classes.margin}
                         onClose={handleClose}
-                        message={
-                            (authError &&
-                                authError.data &&
-                                authError.data.errorMsg) ||
-                            ""
-                        }
+                        message={snackBarMsg}
                     />
                 </Snackbar>
             </BrowserRouter>

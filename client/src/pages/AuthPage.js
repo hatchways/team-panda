@@ -2,6 +2,7 @@ import React from "react";
 import AuthForm from "../components/AuthForm";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Hidden } from "@material-ui/core";
+import { useAuth } from "../utils/AuthProvider";
 
 const useStyles = makeStyles(theme => ({
     root: {
