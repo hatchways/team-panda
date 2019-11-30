@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { useAuth } from "../utils/AuthProvider";
 import PrimaryButton from "./PrimaryButton";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -19,8 +20,8 @@ const useStyles = makeStyles(theme => ({
             width: "90%"
         }
     },
-    button:{
-      marginTop: 30
+    button: {
+        marginTop: 30
     },
     buttonColor: {
         background: theme.gradient
@@ -43,6 +44,7 @@ const AuthForm = props => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [pwdValid, setPwdValid] = useState("");
     const [confirmPwdValid, setConfirmPwdValid] = useState("");
+    const history = useHistory();
 
     const setAuthForm = {
         email: setEmail,
@@ -70,7 +72,7 @@ const AuthForm = props => {
             if (elName in setValidation) {
                 if (elName === "confirmPassword" && password !== value) {
                     setValidation[elName](PWD_CONFIRM_MSG);
-                    return
+                    return;
                 } else if (elName === "password" && confirmPassword !== value) {
                     setValidation[elName](PWD_CONFIRM_MSG);
                     return;
@@ -92,15 +94,19 @@ const AuthForm = props => {
 
     const handleSubmit = event => {
         event.preventDefault();
-        if (pwdValid || confirmPwdValid){
+        if (pwdValid || confirmPwdValid) {
             return;
         }
         switch (formName) {
             case "login":
-                logIn({ email, password });
+                logIn({ email, password }).then((user) => {
+                    history.push(`/users/${user.id}`);
+                });
                 break;
             case "signup":
-                signUp({ email, name, password, confirmPassword });
+                signUp({ email, name, password, confirmPassword }).then((user) => {
+                    history.push(`/users/${user.id}`);
+                });;
                 break;
             default:
                 return;
@@ -181,7 +187,7 @@ const AuthForm = props => {
                         ""
                     )}
                 </div>
-                <div className = {classes.button}>
+                <div className={classes.button}>
                     <PrimaryButton
                         variant="contained"
                         size="large"

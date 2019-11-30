@@ -15,25 +15,44 @@ export const useAuth = () => {
     return useContext(AuthContext);
 };
 
+const getErrorMsgFromRes = (error) => {
+    let msg = "";
+    if (typeof error.response === "string"){
+        msg = error.response;
+    } else if (error.response.data){
+        msg = error.response.data.error;
+    }
+    if (typeof msg !== "string"){
+        msg = error.response.statusText;
+    }
+    return msg;
+}
 //hook provider that creates auth object and handles user state
 function useProvideAuth() {
     const [user, setUser] = useState(null);
     const [authError, setAuthError] = useState(null);
+    const [snackBarMsg, setSnackBarMsg] = useState(null);
 
     const logIn = async credentials => {
         try {
             const res = await authLogIn(credentials);
             setUser(res);
+            return res
         } catch (error) {
-            setAuthError(error.response);
+            const errorMsg = getErrorMsgFromRes(error);
+            setAuthError(errorMsg);
+            setSnackBarMsg(errorMsg);
         }
     };
     const signUp = async credentials => {
         try {
             const res = await authSignUp(credentials);
             setUser(res);
+            return res;
         } catch (error) {
-            setAuthError(error.response);
+            const errorMsg = getErrorMsgFromRes(error);
+            setAuthError(errorMsg);
+            setSnackBarMsg(errorMsg);
         }
     };
     const signOut = async () => {
@@ -47,7 +66,7 @@ function useProvideAuth() {
 
     const getUserProfile = async id => {
         try {
-            const res = await authRequest(`./users/${id}`, { method: "GET" });
+            const res = await authRequest(`/users/${id}`, { method: "GET" });
             let mergedUser = {
                 ...res.data.profile,
                 ...user,
@@ -56,8 +75,11 @@ function useProvideAuth() {
             };
             delete mergedUser.profile;
             setUser(mergedUser);
+            return mergedUser;
         } catch (error) {
-            setAuthError(error.response);
+            const errorMsg = getErrorMsgFromRes(error);
+            setAuthError(errorMsg);
+            setSnackBarMsg(errorMsg);
         }
     };
 
@@ -69,6 +91,8 @@ function useProvideAuth() {
         setUser,
         authError,
         setAuthError,
-        getUserProfile
+        getUserProfile,
+        snackBarMsg,
+        setSnackBarMsg
     };
 }

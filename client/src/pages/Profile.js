@@ -20,11 +20,23 @@ import PrimaryButton from "../components/PrimaryButton";
 import AddPetsButton from "../components/dialogs/AddOrEditPet";
 import EditProfileButton from "../components/dialogs/UpdateProfile";
 import placeholderProfile from "../utils/placeholderProfile";
+import jwt from "jsonwebtoken";
+
+const INVALID_PROFILE = "Error: ";
+
 
 const useStyles = makeStyles(theme => ({
+    invalidProfile:{
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        minHeight: "calc(100vh - 64px)",
+    },
     root: {
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     container: {
         width: "60vw",
@@ -116,14 +128,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Profile() {
+export default function Profile({ match }) {
     const classes = useStyles();
-    const { user, getUserProfile } = useAuth();
+    const { user, getUserProfile, authError } = useAuth();
     const [activeTab, setActiveTab] = useState(0);
     const [pets, setPets] = useState([]);
     useEffect(() => {
-        getUserProfile(user.id);
-        getUsersPets(user.id).then(petList => {
+        getUserProfile(match.params.userId);
+        getUsersPets(match.params.userId).then(petList => {
             setPets(petList);
         });
     }, []);
@@ -140,14 +152,27 @@ export default function Profile() {
         //todo
     };
 
-    const handleEditClick = () => {};
+    const userIdMatchAuthUser = () => {
+        const authUser = jwt.decode(localStorage.getItem("access_token"));
+        const isMatch = authUser.id == match.params.userId;
+        return isMatch;
+    };
 
-    const handleAddPet = () => {};
-
-    const profileBg = user["profileBg"]
+    const profileBg = user && user["profileBg"]
         ? user["profileBg"]
         : placeholderProfile.profileBg;
 
+    if (authError || !user) {
+        return (
+            <div className={classes.root}>
+                <Paper className={classes.invalidProfile} square elevation={5}>
+                    <Typography variant="h3">
+                     {INVALID_PROFILE} {authError}
+                    </Typography>
+                </Paper>
+            </div>
+        );
+    }
     return (
         <div className={classes.root}>
             <Paper className={classes.container} square elevation={5}>
@@ -187,8 +212,11 @@ export default function Profile() {
                         >
                             <Typography variant="button">Message</Typography>
                         </PrimaryButton>
-                        {/* TODO don't show edit button if not own profile */}
-                        <EditProfileButton classes={classes} />
+                        {userIdMatchAuthUser() ? (
+                            <EditProfileButton classes={classes} />
+                        ) : (
+                            ""
+                        )}
                     </div>
                 </Grid>
                 <Tabs
@@ -248,14 +276,17 @@ export default function Profile() {
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
                     <div className={classes.petsPanel}>
-                        <AddPetsButton
-                            userId={user.id}
-                            classes={classes}
-                            pet={{}}
-                            onCreatePet={onCreatePet}
-                        />
+                        {userIdMatchAuthUser() ? (
+                            <AddPetsButton
+                                userId={user.id}
+                                classes={classes}
+                                pet={{}}
+                                onCreatePet={onCreatePet}
+                            />
+                        ) : (
+                            ""
+                        )}
                         <div className={classes.petList}>
-                            {/* {placeholderProfilepets.map((pet, i) => { */}
                             {pets.map((pet, i) => {
                                 return (
                                     <div
