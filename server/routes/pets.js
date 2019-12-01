@@ -56,14 +56,15 @@ module.exports.petsOwners = auth => {
         async (req, res, next) => {
             const { Pet, Post, PetTag, Tag } = models;
             const { petId } = req.params;
-            const { name, about, birthdate, tags, animal } = req.body;
+            const { name, about, dateOfBirth, tags, animal } = req.body;
             try {
                 const pet = await Pet.findByPk(petId);
                 let petProfile = {};
                 let updatedTags = [];
                 if (name) petProfile.name = name;
                 if (about) petProfile.about = about;
-                if (birthdate) petProfile.birthdate = birthdate;
+                if (dateOfBirth) petProfile.dateOfBirth = dateOfBirth;
+                if (req.file) petProfile.profilePic = req.file.location;
                 if (tags) {
                     // find or create a new tag in tag table
                     // then set the association between a pet and tags
@@ -154,11 +155,14 @@ module.exports.petsOwners = auth => {
                     content
                 };
                 if (req.file) editContent.image = req.file.location;
-                const [updatedPostCount, updatedPost] = await Post.update(editContent, {
-                    where: { id: postId},
-                    returning: true,
-                    plain: true
-                });
+                const [updatedPostCount, updatedPost] = await Post.update(
+                    editContent,
+                    {
+                        where: { id: postId },
+                        returning: true,
+                        plain: true
+                    }
+                );
                 res.status(201).send(updatedPost);
             } catch (error) {
                 next(error);
