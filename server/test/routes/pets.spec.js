@@ -39,7 +39,7 @@ describe("Pets routes", () => {
         };
         User = { findOne: stub(), createPet: stub() };
         Tag = { findOrCreate: stub() };
-        Post = { create: stub(), update: stub() };
+        Post = { create: stub(), update: stub(), findByPk: stub() };
         const mockModels = makeMockModels({ Pet, User, Tag, Post }, "./models");
         const mockModule = {
             default: mockModels
@@ -408,9 +408,7 @@ describe("Pets routes", () => {
                         expect(res).to.have.status(201);
                         expect(res.body).to.deep.equal({
                             ...postsDB[1],
-                            ...testReqBody,
-                            id: 2,
-                            pet_id: 4
+                            ...testReqBody
                         });
                     });
             });
