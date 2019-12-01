@@ -390,12 +390,15 @@ describe("Pets routes", () => {
             });
             it("should return 201 when a post is updated", () => {
                 User.findOne.resolves(testUser);
-                Post.update.resolves({
-                    ...postsDB[1],
-                    ...testReqBody,
-                    id: 2,
-                    pet_id: 4
-                });
+                Post.update.resolves([
+                    1,
+                    {
+                        ...postsDB[1],
+                        ...testReqBody,
+                        id: 2,
+                        pet_id: 4
+                    }
+                ]);
                 return chai
                     .request(app)
                     .put(`/users/${testUser.id}/pets/${testPet3.id}/posts/2`)
