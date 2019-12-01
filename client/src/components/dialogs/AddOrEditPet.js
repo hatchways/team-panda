@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { Typography } from "@material-ui/core";
+import { Typography, Grid } from "@material-ui/core";
 import PrimaryButton from "../PrimaryButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -57,7 +57,7 @@ export default function AddOrEditPet({
             animal,
             profilePic
         };
-        // console.log(petInfo);
+
         if (update) {
             updatePet(userId, pet.id, petInfo).then(updatedPet => {
                 setPet(updatedPet);
@@ -77,14 +77,6 @@ export default function AddOrEditPet({
     }, [pet]);
     return (
         <div>
-            {/* <PrimaryButton
-                onClick={handleClickOpen}
-                variant="contained"
-                // size="large"
-                type="button"
-            >
-                <Typography variant="button">{createOrUpdateLabel}</Typography>
-            </PrimaryButton> */}
             <Button
                 variant="outlined"
                 onClick={handleClickOpen}
@@ -92,64 +84,82 @@ export default function AddOrEditPet({
             >
                 {createOrUpdateLabel}
             </Button>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose} maxWidth="md">
                 <DialogTitle id="add-pet-dialog-title">
                     {createOrUpdateLabel}
                 </DialogTitle>
                 <DialogContent>
-                    <TextField
-                        id="name"
-                        label="Pet's Name"
-                        value={name}
-                        onChange={handleChange("name")}
-                        className={classes.textField}
-                        variant="outlined"
-                        fullWidth
-                        margin="dense"
-                        autoFocus
-                        required
-                    ></TextField>
-                    <TextField
-                        id="animal"
-                        label="Animal Type"
-                        value={animal}
-                        className={classes.textField}
-                        onChange={handleChange("animal")}
-                        variant="outlined"
-                        fullWidth
-                        margin="dense"
-                        required
-                    ></TextField>
-                    <TextField
-                        id="dateOfBirth"
-                        type="date"
-                        default="2019-12-09"
-                        label="Date of Birth"
-                        value={dateOfBirth}
-                        className={classes.textField}
-                        onChange={handleChange("dateOfBirth")}
-                        variant="outlined"
-                        fullWidth
-                        margin="dense"
-                        required
-                        InputLabelProps={{
-                            shrink: true
-                        }}
-                    ></TextField>
-                    <TextField
-                        id="about"
-                        label="Pet's About Me"
-                        value={about}
-                        className={classes.textField}
-                        onChange={handleChange("about")}
-                        variant="outlined"
-                        multiline
-                        rows="4"
-                        fullWidth
-                        margin="dense"
-                        required
-                    ></TextField>
-                    <PetImageDropZone returnImgToParent={getProfilePic} />
+                    <Grid container alignContent="center"
+                                justify="center" alignItems="center">
+                        <Grid item xs={6}>
+                            <Grid
+                                container
+                                alignContent="center"
+                                justify="center"
+                            >
+                                <Grid item>
+                                    <PetImageDropZone
+                                        returnImgToParent={getProfilePic}
+                                        displayText= {"Profile Picture"}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                id="name"
+                                label="Pet's Name"
+                                value={name}
+                                onChange={handleChange("name")}
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                margin="dense"
+                                autoFocus
+                                required
+                            ></TextField>
+                            <TextField
+                                id="animal"
+                                label="Animal Type"
+                                value={animal}
+                                className={classes.textField}
+                                onChange={handleChange("animal")}
+                                variant="outlined"
+                                fullWidth
+                                margin="dense"
+                                required
+                            ></TextField>
+                            <TextField
+                                id="dateOfBirth"
+                                type="date"
+                                default="2019-12-09"
+                                label="Date of Birth"
+                                value={dateOfBirth}
+                                className={classes.textField}
+                                onChange={handleChange("dateOfBirth")}
+                                variant="outlined"
+                                fullWidth
+                                margin="dense"
+                                required
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            ></TextField>
+                            <TextField
+                                id="about"
+                                label="Pet's About Me"
+                                value={about}
+                                className={classes.textField}
+                                onChange={handleChange("about")}
+                                variant="outlined"
+                                multiline
+                                rows="4"
+                                fullWidth
+                                margin="dense"
+                                required
+                            ></TextField>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
