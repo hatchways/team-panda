@@ -8,6 +8,11 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { createPet, updatePet } from "../../utils/petService";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker
+} from "@material-ui/pickers";
 import PetImageDropZone from "../ImageDropZone";
 
 export default function AddOrEditPet({
@@ -21,7 +26,7 @@ export default function AddOrEditPet({
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState(pet.name || "");
     const [animal, setAnimal] = React.useState(pet.animal || "");
-    const [dateOfBirth, setDOB] = React.useState(pet.dateOfBirth || "");
+    const [dateOfBirth, setDOB] = React.useState(pet.dateOfBirth || new Date());
     const [about, setAbout] = React.useState(pet.about || "");
     const [profilePic, setProfilePic] = React.useState(pet.profilePic || null);
     const createOrUpdateLabel = update ? "Update Pet" : "Create Pet";
@@ -49,6 +54,10 @@ export default function AddOrEditPet({
         setPetForm[property](event.target.value);
     };
 
+    const handleDateChange = property => value => {
+        setPetForm[property](value);
+    };
+
     const handleSubmit = () => {
         let petInfo = {
             name,
@@ -57,7 +66,7 @@ export default function AddOrEditPet({
             animal,
             profilePic
         };
-
+        console.log(petInfo);
         if (update) {
             updatePet(userId, pet.id, petInfo).then(updatedPet => {
                 setPet(updatedPet);
@@ -89,8 +98,12 @@ export default function AddOrEditPet({
                     {createOrUpdateLabel}
                 </DialogTitle>
                 <DialogContent>
-                    <Grid container alignContent="center"
-                                justify="center" alignItems="center">
+                    <Grid
+                        container
+                        alignContent="center"
+                        justify="center"
+                        alignItems="center"
+                    >
                         <Grid item xs={6}>
                             <Grid
                                 container
@@ -100,7 +113,7 @@ export default function AddOrEditPet({
                                 <Grid item>
                                     <PetImageDropZone
                                         returnImgToParent={getProfilePic}
-                                        displayText= {"Profile Picture"}
+                                        displayText={"Profile Picture"}
                                     />
                                 </Grid>
                             </Grid>
@@ -129,22 +142,18 @@ export default function AddOrEditPet({
                                 margin="dense"
                                 required
                             ></TextField>
-                            <TextField
-                                id="dateOfBirth"
-                                type="date"
-                                default="2019-12-09"
-                                label="Date of Birth"
-                                value={dateOfBirth}
-                                className={classes.textField}
-                                onChange={handleChange("dateOfBirth")}
-                                variant="outlined"
-                                fullWidth
-                                margin="dense"
-                                required
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                            ></TextField>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    id="dateOfBirth"
+                                    margin="dense"
+                                    // type="date"
+                                    label="Date of Birth"
+                                    format="MM/dd/yyyy"
+                                    value={dateOfBirth}
+                                    variant="outlined"
+                                    onChange={handleDateChange("dateOfBirth")}
+                                />
+                            </MuiPickersUtilsProvider>
                             <TextField
                                 id="about"
                                 label="Pet's About Me"

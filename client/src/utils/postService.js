@@ -12,9 +12,6 @@ export const createPost = async (userId, petId, postInfo) => {
             "Content-Type": "multipart/form-data"
         }
     });
-    if (res.status === 201) {
-        console.log(res.data);
-    }
     return res.data;
 };
 
