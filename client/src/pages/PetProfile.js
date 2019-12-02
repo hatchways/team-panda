@@ -52,6 +52,13 @@ export default function PetProfile({ match }) {
         setPosts([newPost, ...posts]);
     };
 
+    const onUpdatePost = updatedPost => {
+        let updatedPosts = posts.map(post =>
+            post.id == updatedPost.id ? updatedPost : post
+        );
+        setPosts(updatedPosts);
+    };
+
     useEffect(() => {
         getPetWithPosts(match.params.ownerId, match.params.petId).then(
             petWithPosts => {
@@ -160,7 +167,11 @@ export default function PetProfile({ match }) {
                         {posts.map(post => {
                             return (
                                 <Grid item md={6} xs={12} key={post.id}>
-                                    <PostCard post={post}></PostCard>
+                                    <PostCard
+                                        post={post}
+                                        pet={pet}
+                                        onUpdatePost={onUpdatePost}
+                                    ></PostCard>
                                 </Grid>
                             );
                         })}

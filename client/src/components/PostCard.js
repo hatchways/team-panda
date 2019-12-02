@@ -11,6 +11,7 @@ import {
     Grid,
     Button
 } from "@material-ui/core";
+import UpdatePost from "./dialogs/AddOrEditPost";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { maxWidth } from "@material-ui/system";
 const useStyles = makeStyles(theme => ({
@@ -46,6 +47,12 @@ export default function(props) {
                             marginLeft: "auto"
                         }}
                     >
+                        {/* <UpdatePost
+                            post={props.post}
+                            pet={props.pet}
+                            update
+                            onUpdatePost={props.onUpdatePost}
+                        ></UpdatePost> */}
                         <Button variant="outlined">
                             <FavoriteIcon className={classes.iconColor} />
                             <Typography>Like</Typography>

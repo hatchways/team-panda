@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { Typography } from "@material-ui/core";
+import { Typography, Grid } from "@material-ui/core";
 import PrimaryButton from "../PrimaryButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -80,51 +80,79 @@ export default function UpdateProfileDialog({ classes }) {
                     Edit
                 </Typography>
             </Button>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose} maxWidth="lg">
                 <DialogTitle id="edit-profile-dialog-title">
                     Edit Your Profile
                 </DialogTitle>
                 <DialogContent>
-                    <TextField
-                        id="location"
-                        label="Your location"
-                        value={location}
-                        onChange={handleChange("location")}
-                        className={classes.textField}
-                        variant="outlined"
-                        fullWidth
-                        margin="dense"
-                        autoFocus
-                        required
-                    ></TextField>
-                    <TextField
-                        id="introduction"
-                        label="Your intro"
-                        value={introduction}
-                        className={classes.textField}
-                        onChange={handleChange("introduction")}
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows="4"
-                        margin="dense"
-                        required
-                    ></TextField>
-                    <TextField
-                        id="overview"
-                        label="Your overview"
-                        value={overview}
-                        className={classes.textField}
-                        onChange={handleChange("overview")}
-                        variant="outlined"
-                        multiline
-                        rows="4"
-                        fullWidth
-                        margin="dense"
-                        required
-                    ></TextField>
-                    <ImageDropZone returnImgToParent={getProfilePic} />
-                    <ImageDropZone returnImgToParent={getProfileBg} />
+                    <Grid
+                        container
+                        alignContent="center"
+                        justify="center"
+                        alignItems="center"
+                    >
+                        <Grid item xs={6}>
+                            <Grid
+                                container
+                                alignContent="center"
+                                justify="center"
+                            >
+                                <Grid item xs={5}>
+                                    <ImageDropZone
+                                        returnImgToParent={getProfilePic}
+                                        displayText={"Profile Picture"}
+                                    />
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <ImageDropZone
+                                        returnImgToParent={getProfileBg}
+                                        displayText={"Profile Background"}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <TextField
+                                id="location"
+                                label="Your location"
+                                value={location}
+                                onChange={handleChange("location")}
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                margin="dense"
+                                autoFocus
+                                required
+                            ></TextField>
+                            <TextField
+                                id="introduction"
+                                label="Your intro"
+                                value={introduction}
+                                className={classes.textField}
+                                onChange={handleChange("introduction")}
+                                variant="outlined"
+                                fullWidth
+                                multiline
+                                rows="4"
+                                margin="dense"
+                                required
+                            ></TextField>
+                            <TextField
+                                id="overview"
+                                label="Your overview"
+                                value={overview}
+                                className={classes.textField}
+                                onChange={handleChange("overview")}
+                                variant="outlined"
+                                multiline
+                                rows="4"
+                                fullWidth
+                                margin="dense"
+                                required
+                            ></TextField>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

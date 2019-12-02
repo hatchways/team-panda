@@ -1,7 +1,8 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { makeStyles } from "@material-ui/core/styles";
-
+import AddIcon from "@material-ui/icons/Add";
+import { Typography } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
     previewContainerProps: {
         width: "30%",
@@ -13,9 +14,24 @@ const useStyles = makeStyles(theme => ({
         width: "100%",
         height: "auto",
         display: "block"
+    },
+    imageZone: {
+        width: "200px",
+        height: "200px",
+        lineHeight: "200px",
+        backgroundColor: "#eee",
+        textAlign: "center"
+    },
+    boxZone: {
+        textAlign: "center",
+        width: "200px"
     }
 }));
-export default function ImageDropZone(props) {
+export default function ImageDropZone({
+    displayText,
+    returnImgToParent,
+    customImageZoneArea
+}) {
     const classes = useStyles();
     const [imgs, setImgs] = React.useState([]);
     const { getRootProps, getInputProps } = useDropzone({
@@ -29,9 +45,25 @@ export default function ImageDropZone(props) {
                     })
                 )
             );
-            props.returnImgToParent(files[0]);
+            returnImgToParent(files[0]);
         }
     });
+    let defaultZone = (
+        <div
+            className={classes.imageZone}
+            style={
+                imgs.length > 0
+                    ? {
+                          background: `url(${imgs[0].preview}) no-repeat center/auto 100%`
+                      }
+                    : {}
+            }
+        >
+            {!imgs.length && (
+                <AddIcon style={{ lineHeight: "1.5" }} fontSize="large" />
+            )}
+        </div>
+    );
 
     const preview = imgs.map((file, i) => (
         <div className={classes.previewContainerProps} key={i}>
@@ -45,14 +77,17 @@ export default function ImageDropZone(props) {
 
     return (
         <div>
-            <div style={{ backgroundColor: "#eee" }}>
+            <div>
+                {displayText && (
+                    <div className={classes.boxZone}>
+                        <Typography>{displayText}</Typography>
+                    </div>
+                )}
                 <div {...getRootProps()}>
                     <input {...getInputProps()} />
-                    <p>Drop Profile Picture or click to upload.</p>
+                    {(customImageZoneArea && customImageZoneArea(imgs)) ||
+                        defaultZone}
                 </div>
-            </div>
-            <div>
-                <aside>{preview}</aside>
             </div>
         </div>
     );
