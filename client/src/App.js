@@ -43,14 +43,6 @@ function App() {
             handleOpen();
         }
     });
-    useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        if (token) {
-            const decodedToken = jwt.decode(token);
-            const userId = decodedToken.id;
-            getUserProfile(userId);
-        }
-    }, []);
 
     return (
         <MuiThemeProvider theme={theme}>
