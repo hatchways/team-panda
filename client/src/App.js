@@ -17,6 +17,7 @@ import { Snackbar } from "@material-ui/core";
 import { MySnackbarContentWrapper } from "./components/Snackbar";
 
 import jwt from "jsonwebtoken";
+import BrowsePets from "./pages/BrowsePets";
 
 const useStyles = makeStyles(theme => ({
     margin: {
@@ -49,6 +50,7 @@ function App() {
             <BrowserRouter>
                 <NavBar />
                 <Switch>
+                    <Route path = "/pets" component = {BrowsePets} />
                     <Route exact path="/users/:userId" component={Profile} />
                     <Route
                         exact
