@@ -1,4 +1,6 @@
 import { authRequest } from "../utils/auth";
+import axios from "axios";
+
 export const createPet = async (userId, petInfo) => {
     let formData = new FormData();
     for (let prop in petInfo) {
@@ -48,4 +50,8 @@ export const getPetWithPosts = async (userId, petId) => {
         return res.data;
     }
     return {};
+};
+
+export const getPets = search => {
+    return axios.get(`/query?type=pet&search=${search}`);
 };
