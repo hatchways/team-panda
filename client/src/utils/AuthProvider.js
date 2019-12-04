@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { authLogIn, authSignUp, authLogOut, authRequest } from "./auth";
+import jwt from "jsonwebtoken";
 
 const AuthContext = createContext();
 
@@ -30,12 +31,14 @@ const getErrorMsgFromRes = (error) => {
 //hook provider that creates auth object and handles user state
 function useProvideAuth() {
     const [user, setUser] = useState(null);
+    const [authUser, setAuthUser] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [snackBarMsg, setSnackBarMsg] = useState(null);
 
     const logIn = async credentials => {
         try {
             const res = await authLogIn(credentials);
+            setAuthUser(res);
             setUser(res);
             return res
         } catch (error) {
@@ -47,6 +50,7 @@ function useProvideAuth() {
     const signUp = async credentials => {
         try {
             const res = await authSignUp(credentials);
+            setAuthUser(res);
             setUser(res);
             return res;
         } catch (error) {
@@ -83,6 +87,27 @@ function useProvideAuth() {
         }
     };
 
+    const getAuthUser = async () => {
+        const token = localStorage.getItem("access_token");
+        try {
+            if (token){
+                const tokenUser = jwt.decode(token);
+                const res = await authRequest(`/users/${tokenUser.id}`, {method: "GET"});
+                let flattenedUser = {
+                    ...res.data.profile,
+                    userProfileId: res.data.profile.id,
+                    ...res.data
+                };
+                delete flattenedUser.profile;
+                setAuthUser(flattenedUser);
+            }
+        } catch (error) {
+            const errorMsg = getErrorMsgFromRes(error);
+            setAuthError(errorMsg);
+            setSnackBarMsg(errorMsg);
+        }
+    }
+
     return {
         logIn,
         signUp,
@@ -93,6 +118,8 @@ function useProvideAuth() {
         setAuthError,
         getUserProfile,
         snackBarMsg,
-        setSnackBarMsg
+        setSnackBarMsg,
+        authUser,
+        getAuthUser
     };
 }

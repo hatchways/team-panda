@@ -17,6 +17,7 @@ import { Snackbar } from "@material-ui/core";
 import { MySnackbarContentWrapper } from "./components/Snackbar";
 
 import jwt from "jsonwebtoken";
+import BrowsePets from "./pages/BrowsePets";
 
 const useStyles = makeStyles(theme => ({
     margin: {
@@ -43,20 +44,13 @@ function App() {
             handleOpen();
         }
     });
-    useEffect(() => {
-        const token = localStorage.getItem("access_token");
-        if (token) {
-            const decodedToken = jwt.decode(token);
-            const userId = decodedToken.id;
-            getUserProfile(userId);
-        }
-    }, []);
 
     return (
         <MuiThemeProvider theme={theme}>
             <BrowserRouter>
                 <NavBar />
                 <Switch>
+                    <Route path = "/pets" component = {BrowsePets} />
                     <Route exact path="/users/:userId" component={Profile} />
                     <Route
                         exact

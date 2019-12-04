@@ -7,7 +7,8 @@ const placeholderPetProfile = {
     profilePic: "../../../meepers.png",
     about: `I'm a cat that lives with my siblings Buster and Snoopy. They are dogs
     but they are welcomed in our loving home! My owneris Chris and he takes care of us very well. My
-    favorite hobbies are napping and snacking. I am very calm and often like to chill in my little nook.`
+    favorite hobbies are napping and snacking. I am very calm and often like to chill in my little nook.`,
+    tags: ['fast', 'striped', 'energetic', 'playful']
 };
 
 const placeholderPosts = [

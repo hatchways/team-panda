@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
     AppBar,
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function NavBar(props) {
-    const { user } = useAuth();
+    const { authUser, getAuthUser } = useAuth();
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -62,6 +62,10 @@ export default function NavBar(props) {
     const handleMobileMenuOpen = event => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+
+    useEffect(() => {
+        getAuthUser();
+    }, []);
 
     const renderLoggedOutButtons = () => (
         <div>
@@ -111,7 +115,7 @@ export default function NavBar(props) {
                 type="button"
                 variant="contained"
                 component={LinkButton}
-                to={`/users/${user.id}`}
+                to={`/users/${authUser.id}`}
             >
                 <Typography variant="button">My Profile</Typography>
             </PrimaryButton>
@@ -148,7 +152,7 @@ export default function NavBar(props) {
                 </IconButton>
                 <p>Feed</p>
             </MenuItem>
-            <MenuItem component={Link} to={`/users/${user.id}`}>
+            <MenuItem component={Link} to={`/users/${authUser.id}`}>
                 <IconButton color="inherit">
                     <AccountCircle />
                 </IconButton>
@@ -166,7 +170,7 @@ export default function NavBar(props) {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            {user
+            {authUser
                 ? renderLoggedInMobileButtons()
                 : renderLoggedOutMobileButtons()}
         </Menu>
@@ -178,7 +182,7 @@ export default function NavBar(props) {
                 <Typography variant="h5">PET WORLD</Typography>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                    {user ? renderLoggedInButtons() : renderLoggedOutButtons()}
+                    {authUser ? renderLoggedInButtons() : renderLoggedOutButtons()}
                 </div>
                 <div className={classes.sectionMobile}>
                     <IconButton onClick={handleMobileMenuOpen} color="inherit">

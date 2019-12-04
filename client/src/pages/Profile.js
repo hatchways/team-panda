@@ -12,9 +12,9 @@ import {
     Button,
     Card,
     Divider,
-    CardHeader,
-    Link
+    CardHeader
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import TabPanel from "../components/TabPanel";
 import PrimaryButton from "../components/PrimaryButton";
 import AddPetsButton from "../components/dialogs/AddOrEditPet";
@@ -24,19 +24,18 @@ import jwt from "jsonwebtoken";
 
 const INVALID_PROFILE = "Error: ";
 
-
 const useStyles = makeStyles(theme => ({
-    invalidProfile:{
+    invalidProfile: {
         textAlign: "center",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        minHeight: "calc(100vh - 64px)",
+        minHeight: "calc(100vh - 64px)"
     },
     root: {
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "center"
     },
     container: {
         width: "60vw",
@@ -158,16 +157,17 @@ export default function Profile({ match }) {
         return isMatch;
     };
 
-    const profileBg = user && user["profileBg"]
-        ? user["profileBg"]
-        : placeholderProfile.profileBg;
+    const profileBg =
+        user && user["profileBg"]
+            ? user["profileBg"]
+            : placeholderProfile.profileBg;
 
     if (authError || !user) {
         return (
             <div className={classes.root}>
                 <Paper className={classes.invalidProfile} square elevation={5}>
                     <Typography variant="h3">
-                     {INVALID_PROFILE} {authError}
+                        {INVALID_PROFILE} {authError}
                     </Typography>
                 </Paper>
             </div>
@@ -299,8 +299,8 @@ export default function Profile({ match }) {
                                             src={pet.profilePic}
                                         />
                                         <Link
-                                            underline="none"
-                                            href={`/users/${pet.ownerId}/pets/${pet.id}`}
+                                            style={{ textDecoration: "none" }}
+                                            to={`/users/${pet.ownerId}/pets/${pet.id}`}
                                         >
                                             <Typography variant="subtitle2">
                                                 {pet.name}

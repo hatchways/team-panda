@@ -20,6 +20,11 @@ export const theme = createMuiTheme({
             root: {
                 borderRadius: "100px"
             }
+        },
+        MuiChip:{
+            root:{
+                borderRadius: "5px"
+            }
         }
     },
     primary: "#2e363c",
