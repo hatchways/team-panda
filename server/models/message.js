@@ -10,14 +10,13 @@ module.exports = (sequelize, DataTypes) => {
             text: {
                 type: DataTypes.TEXT
             },
-            to: {
-                type: DataTypes.INTEGER,
-            },
-            from: {
-                type: DataTypes.INTEGER,
-            }
         }
     );
+
+    Message.associate = function(models){
+        Message.belongsTo(models.User, {as: "from"});
+        Message.belongsTo(models.User, {as: "to"});
+    }
     return Message;
 };
 
