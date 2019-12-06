@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Conversation.associate = function(models) {
         Conversation.hasMany(models.Message);
-        Conversation.hasMany(models.User);
+        Conversation.belongsToMany(models.User, {through: 'user_conversation'});
     };
 
     return Conversation;
