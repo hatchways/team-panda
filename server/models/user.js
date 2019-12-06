@@ -75,6 +75,8 @@ const user = (sequelize, DataTypes) => {
         User.hasOne(models.UserProfile, {
             foreignKey: "id"
         });
+
+        User.hasMany(models.Conversation);
     };
     return User;
 };
