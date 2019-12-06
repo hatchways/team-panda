@@ -10,21 +10,13 @@ module.exports = (sequelize, DataTypes) => {
             text: {
                 type: DataTypes.TEXT
             },
-            fromUserRead:{
-                type: DataTypes.BOOLEAN,
-                defaultValue: true
-            },
-            toUserRead:{
-                type: DataTypes.BOOLEAN,
-                defaultValue: false
-            }
         }
     );
 
     Message.associate = function(models){
         Message.belongsTo(models.User, {as: "from"});
-        Message.belongsTo(models.User, {as: "to"});
     }
+
     return Message;
 };
 

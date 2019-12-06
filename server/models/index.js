@@ -18,6 +18,7 @@ const models = {
     Post: sequelize.import("./post"),
     Followed_pet: sequelize.import("./followed_pet"),
     Tag: sequelize.import('./tag'),
+    UserConversation: sequelize.import('./user_conversation'),
     Conversation: sequelize.import('./conversation'),
     Message: sequelize.import('./message')
 };
