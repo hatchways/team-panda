@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
             text: {
                 type: DataTypes.TEXT
             },
+            fromUserRead:{
+                type: DataTypes.BOOLEAN
+            },
+            toUserRead:{
+                type: DataTypes.BOOLEAN
+            }
         }
     );
 
