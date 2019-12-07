@@ -10,6 +10,7 @@ import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import usersRouter from "./routes/users";
 import { petsRouter } from "./routes/pets";
+import queryRouter from "./routes/query";
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/users", usersRouter(passport));
 app.use("/pets", petsRouter(passport));
+app.use("/query", queryRouter(passport));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
