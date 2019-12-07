@@ -76,7 +76,10 @@ const user = (sequelize, DataTypes) => {
             foreignKey: "id"
         });
 
-        User.belongsToMany(models.Conversation, {through: models.UserConversation});
+        User.belongsToMany(models.Conversation, {through: "user_conversation"});
+
+        User.belongsToMany(models.Message, {through: models.UserMessage});
+
     };
     return User;
 };

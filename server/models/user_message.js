@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const UserConversation = sequelize.define(
-        "user_conversation",
+    const UserMessage = sequelize.define(
+        "user_message",
         {
             read: {
                 type: DataTypes.BOOLEAN,
@@ -8,6 +8,6 @@ module.exports = (sequelize, DataTypes) => {
             }
         }
     );
-    return UserConversation;
+    return UserMessage;
 };
 
