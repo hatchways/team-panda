@@ -17,7 +17,10 @@ const models = {
     UserProfile: sequelize.import("./userProfile"),
     Post: sequelize.import("./post"),
     Followed_pet: sequelize.import("./followed_pet"),
-    Tag: sequelize.import('./tag')
+    Tag: sequelize.import('./tag'),
+    UserMessage: sequelize.import('./user_message'),
+    Conversation: sequelize.import('./conversation'),
+    Message: sequelize.import('./message')
 };
 Object.keys(models).forEach(key => {
     if ("associate" in models[key]) {
