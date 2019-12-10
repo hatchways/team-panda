@@ -26,7 +26,7 @@ describe("POST /users routes", () => {
             default: mockModels
         };
         mockery.registerMock("../models", mockModule);
-        app = require("../../app.js");
+        app = require("../../app.js").app;
         testUser = {
             id: 25,
             email: "jdoe1@email.com",

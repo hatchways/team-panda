@@ -106,14 +106,14 @@ const placeholderPets = [
         location: "Toronto, Canada",
         ownerId: "placeholder1",
         profilePic: "snoopy.png"
-    },
+    }
 ];
 
 const placeholderProfile = {
     id: "placeholder1",
     name: "Christopher",
-    profilePic: "profile-pic.png",
-    profileBg: 'profile-background.png',
+    profilePic: "../profile-pic.png",
+    profileBg: "../profile-background.png",
     headline:
         "I am a Software Developer that has 2 dogs and 1 cat. I love going on hikes with my dogs on the weekend",
     overview:

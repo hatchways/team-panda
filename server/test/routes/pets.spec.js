@@ -106,7 +106,7 @@ describe("Pets routes", () => {
         ];
 
         mockery.registerMock("../models", mockModule);
-        app = require("../../app.js");
+        app = require("../../app.js").app;
         jwtRequest = jwt.sign({ id: testUser.id }, "tempSecret");
     });
 
