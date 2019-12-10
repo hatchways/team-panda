@@ -35,6 +35,8 @@ function useProvideAuth() {
     const [authError, setAuthError] = useState(null);
     const [snackBarMsg, setSnackBarMsg] = useState(null);
     const [socket, setSocket] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [newConversation, setNewConversation] = useState(null);
 
     const logIn = async credentials => {
         try {
@@ -111,6 +113,76 @@ function useProvideAuth() {
         }
     };
 
+    const getAllMessages = async convoId => {
+        const token = localStorage.getItem("access_token");
+        try {
+            if (token) {
+                const tokenUser = jwt.decode(token);
+                const res = await authRequest(
+                    `/users/${tokenUser.id}/conversations`,
+                    { method: "GET" }
+                );
+                setMessages(res.data);
+                if (socket) {
+                    // socket.emit("join-room", convoId);
+                    socket.on(tokenUser.id.toString(), newConvo => {
+                        console.log("new convo received", newConvo);
+                    });
+                    socket.on("new message", newMessage => {
+                        console.log("new message received", newMessage);
+                    });
+                }
+            }
+        } catch (error) {
+            if (error) {
+                const errorMsg = getErrorMsgFromRes(error);
+                setSnackBarMsg(errorMsg);
+            }
+        }
+    };
+
+    const getMessagesForConvo = async convoId => {
+        const token = localStorage.getItem("access_token");
+        try {
+            if (token) {
+                const tokenUser = jwt.decode(token);
+                if (socket) {
+                    socket.emit("join-room", convoId);
+                }
+            }
+        } catch (error) {
+            if (error) {
+                const errorMsg = getErrorMsgFromRes(error);
+                setSnackBarMsg(errorMsg);
+            }
+        }
+    };
+
+    const sendMessage = (convoId, message) => {
+        const token = localStorage.getItem("access_token");
+        if (token && socket) {
+            const tokenUser = jwt.decode(token);
+            socket.emit("new message", convoId, {
+                fromId: tokenUser.id,
+                conversationId: convoId,
+                text: message
+            });
+        }
+    };
+
+    const startNewConversation = userId => {
+        const token = localStorage.getItem("access_token");
+        if (socket && token) {
+            const tokenUser = jwt.decode(token);
+
+            socket.once(tokenUser.id.toString(), newConversation => {
+                console.log("new convo received!", newConversation);
+                setNewConversation(newConversation);
+            });
+            socket.emit("new conversation", [userId, tokenUser.id]);
+        }
+    };
+
     return {
         logIn,
         signUp,
@@ -125,6 +197,11 @@ function useProvideAuth() {
         authUser,
         getAuthUser,
         socket,
-        setSocket
+        setSocket,
+        getAllMessages,
+        messages,
+        startNewConversation,
+        sendMessage,
+        newConversation
     };
 }
