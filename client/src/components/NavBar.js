@@ -17,8 +17,9 @@ import PrimaryButton from "./PrimaryButton";
 import LinkButton from "./LinkButton";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import DynamicFeedIcon from "@material-ui/icons/DynamicFeed";
+import MailIcon from "@material-ui/icons/Mail";
+import PetsIcon from "@material-ui/icons/Pets";
+
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -97,18 +98,20 @@ export default function NavBar(props) {
                 type="button"
                 variant="text"
                 component={LinkButton}
-                to="/notifications"
+                to="/messages"
+                startIcon={<MailIcon htmlColor="white"/>}
             >
-                <Typography variant="button">Notifications</Typography>
+                <Typography variant="button">Messages</Typography>
             </Button>
             <Button
                 size="medium"
                 type="button"
                 variant="text"
                 component={LinkButton}
-                to="/feed"
+                to="/pets"
+                startIcon={<PetsIcon htmlColor="white"/>}
             >
-                <Typography variant="button">Feed</Typography>
+                <Typography variant="button">Browse Pets</Typography>
             </Button>
             <PrimaryButton
                 size="medium"
@@ -135,22 +138,22 @@ export default function NavBar(props) {
 
     const renderLoggedInMobileButtons = () => (
         <div>
-            <MenuItem component={Link} to="/notifications">
+            <MenuItem component={Link} to="/messages">
                 <IconButton color="inherit">
                     {/* TODO: update notification number */}
                     <Badge badgeContent={4} color="secondary">
-                        <NotificationsIcon />
+                        <MailIcon />
                     </Badge>
                 </IconButton>
-                <p>Notifications</p>
+                <p>Messages</p>
             </MenuItem>
-            <MenuItem component={Link} to="/feed">
+            <MenuItem component={Link} to="/pets">
                 <IconButton color="inherit">
                     <Badge badgeContent={11} color="secondary">
-                        <DynamicFeedIcon />
+                        <PetsIcon />
                     </Badge>
                 </IconButton>
-                <p>Feed</p>
+                <p>Browse Pets</p>
             </MenuItem>
             <MenuItem component={Link} to={`/users/${authUser.id}`}>
                 <IconButton color="inherit">

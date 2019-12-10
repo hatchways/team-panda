@@ -18,6 +18,7 @@ import { MySnackbarContentWrapper } from "./components/Snackbar";
 
 import jwt from "jsonwebtoken";
 import BrowsePets from "./pages/BrowsePets";
+import Messages from "./pages/Messages";
 
 const useStyles = makeStyles(theme => ({
     margin: {
@@ -51,6 +52,7 @@ function App() {
                 <NavBar />
                 <Switch>
                     <Route path = "/pets" component = {BrowsePets} />
+                    <Route path = "/messages" component = {Messages} />
                     <Route exact path="/users/:userId" component={Profile} />
                     <Route
                         exact
