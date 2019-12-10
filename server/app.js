@@ -14,7 +14,6 @@ import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import usersRouter from "./routes/users";
 import { petsRouter } from "./routes/pets";
-// import messages from "./routes/messages";
 
 var app = express();
 var server = http.createServer(app);
