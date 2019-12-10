@@ -32,7 +32,7 @@ var server = require("../app").server;
  */
 
 sequelize
-    .sync({ force: true })
+    .sync()
     .then(() => {
         server.listen(port);
         server.on("error", onError);
