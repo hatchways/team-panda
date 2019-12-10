@@ -21,6 +21,7 @@ import AddPetsButton from "../components/dialogs/AddOrEditPet";
 import EditProfileButton from "../components/dialogs/UpdateProfile";
 import placeholderProfile from "../utils/placeholderProfile";
 import jwt from "jsonwebtoken";
+import SendMessageDialog from "../components/dialogs/SendMessage";
 
 const INVALID_PROFILE = "Error: ";
 
@@ -129,7 +130,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile({ match }) {
     const classes = useStyles();
-    const { user, getUserProfile, authError } = useAuth();
+    const { user, getUserProfile, authError, startNewConversation} = useAuth();
     const [activeTab, setActiveTab] = useState(0);
     const [pets, setPets] = useState([]);
     useEffect(() => {
@@ -145,10 +146,6 @@ export default function Profile({ match }) {
 
     const handleChange = (event, newValue) => {
         setActiveTab(newValue);
-    };
-
-    const handleMessageClick = () => {
-        //todo
     };
 
     const userIdMatchAuthUser = () => {
@@ -204,14 +201,7 @@ export default function Profile({ match }) {
                         </Typography>
                     </div>
                     <div className={classes.summaryButtons}>
-                        <PrimaryButton
-                            onClick={handleMessageClick}
-                            variant="contained"
-                            size="large"
-                            type="button"
-                        >
-                            <Typography variant="button">Message</Typography>
-                        </PrimaryButton>
+                        {userIdMatchAuthUser() ? "" : <SendMessageDialog />}
                         {userIdMatchAuthUser() ? (
                             <EditProfileButton classes={classes} />
                         ) : (
