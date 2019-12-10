@@ -29,7 +29,7 @@ describe("/users/ profile routes", () => {
             default: mockModels
         };
         mockery.registerMock("../models", mockModule);
-        app = require("../../app.js");
+        app = require("../../app.js").app;
         testUser = {
             id: 25,
             email: "jdoe1@email.com",
@@ -184,7 +184,12 @@ describe("/users/ profile routes", () => {
                 .set("Authorization", `Bearer ${jwtRequest}`)
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.eql({profile: testUserProfile, id: testUser.id, email: testUser.email, name: testUser.name});
+                    res.body.should.eql({
+                        profile: testUserProfile,
+                        id: testUser.id,
+                        email: testUser.email,
+                        name: testUser.name
+                    });
                     done();
                 });
         });

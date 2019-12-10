@@ -8,6 +8,10 @@ const { upload } = require("../storage/config");
 
 module.exports = auth => {
     router.use("/:userId/pets", require("./pets").petsOwners(auth));
+    router.use(
+        "/:userId/conversations",
+        require("./conversations").userConversations(auth)
+    );
     router.post("/register", (req, res, next) => {
         let newUser = {
             name: req.body.name,

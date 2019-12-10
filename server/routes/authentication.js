@@ -16,7 +16,12 @@ passport.use(
         if (!paramIdMatchesPayloadId(req.params.userId, jwt_payload.id)) {
             return done(new ForbiddenError(), false);
         }
-        models.User.findOne({ where: { id: jwt_payload.id } })
+        models.User.findOne({
+            where: { id: jwt_payload.id },
+            attributes: {
+                exclude: ["password", "confirmPass"]
+            }
+        })
             .then(user => {
                 done(null, user);
             })
@@ -30,7 +35,12 @@ passport.use(
     "jwt",
     new JwtStrategy(opts, (req, jwt_payload, done) => {
         let id = req.params.userId || jwt_payload.id;
-        models.User.findOne({ where: { id } })
+        models.User.findOne({
+            where: { id },
+            attributes: {
+                exclude: ["password", "confirmPass"]
+            }
+        })
             .then(user => {
                 if (user) return done(null, user);
                 done(`User with id of '${id}' does not exist`, false);

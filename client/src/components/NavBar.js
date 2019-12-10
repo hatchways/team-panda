@@ -19,6 +19,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import DynamicFeedIcon from "@material-ui/icons/DynamicFeed";
+import io from "socket.io-client";
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -49,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function NavBar(props) {
-    const { authUser, getAuthUser } = useAuth();
+    const { authUser, getAuthUser, socket, setSocket } = useAuth();
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -66,6 +67,25 @@ export default function NavBar(props) {
     useEffect(() => {
         getAuthUser();
     }, []);
+
+    const createSocket = () => {
+        if (!socket) {
+            let token = localStorage.getItem("access_token");
+            let newSocket = io("http://localhost:3001", {
+                transportOptions: {
+                    polling: {
+                        extraHeaders: {
+                            token
+                        }
+                    }
+                }
+            });
+            newSocket.on("it works", function(data) {
+                console.log(data);
+            });
+            setSocket(newSocket);
+        }
+    };
 
     const renderLoggedOutButtons = () => (
         <div>
@@ -178,11 +198,14 @@ export default function NavBar(props) {
 
     return (
         <AppBar position="sticky" className={classes.root}>
+            {authUser && createSocket()}
             <Toolbar>
                 <Typography variant="h5">PET WORLD</Typography>
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
-                    {authUser ? renderLoggedInButtons() : renderLoggedOutButtons()}
+                    {authUser
+                        ? renderLoggedInButtons()
+                        : renderLoggedOutButtons()}
                 </div>
                 <div className={classes.sectionMobile}>
                     <IconButton onClick={handleMobileMenuOpen} color="inherit">
