@@ -1,17 +1,35 @@
 import createError from "http-errors";
 import express, { json, urlencoded } from "express";
+import http from "http";
+import socketIo from "socket.io";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "./routes/authentication";
-import { CustomError } from "./errors/";
+import { CustomError, ForbiddenError } from "./errors/";
+import jwt from "jsonwebtoken";
+import models from "./models";
 
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import usersRouter from "./routes/users";
 import { petsRouter } from "./routes/pets";
+// import messages from "./routes/messages";
 
 var app = express();
+var server = http.createServer(app);
+var io = socketIo(server, {
+    handlePreflightRequest: (req, res) => {
+        const headers = {
+            "Access-Control-Allow-Headers":
+                "Content-Type, Authorization, token",
+            "Access-Control-Allow-Origin": req.headers.origin,
+            "Access-Control-Allow-Credentials": true
+        };
+        res.writeHead(200, headers);
+        res.end();
+    }
+});
 
 app.use(logger("dev"));
 app.use(json());
@@ -48,6 +66,52 @@ app.use(function(err, req, res, next) {
     }
 });
 
+io.use(function(socket, next) {
+    if (socket.handshake.headers && socket.handshake.headers.token) {
+        jwt.verify(socket.handshake.headers.token, "tempSecret", function(
+            err,
+            decoded
+        ) {
+            console.log(err);
+            if (err) return next(new ForbiddenError());
+            socket.userId = decoded.userId;
+            next();
+        });
+    }
+    next(new CustomError("No token provided"));
+}).on("connection", function(socket) {
+    console.log("connected");
+    socket.on("new message", function(conversationId, message) {
+        models.Message.create(message).then(newMessage => {
+            io.to(`${conversationId}`).emit(newMessage);
+        });
+    });
+    socket.on("new conversation", function(userIds) {
+        models.Conversation.create().then(newConversation => {
+            models.User.findAll({
+                attributes: {
+                    exclude: ["password", "confirmPass"]
+                },
+                where: {
+                    id: userIds
+                }
+            })
+                .then(users => {
+                    return newConversation.addUsers(users);
+                })
+                .then(() => {
+                    for (let userId of userIds) {
+                        socket.emit(userId, newConversation);
+                    }
+                });
+        });
+    });
+
+    socket.on("join room", function(conversationId) {
+        socket.join(conversationId);
+    });
+});
+
 // error handler
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
@@ -59,4 +123,4 @@ app.use(function(err, req, res, next) {
     res.json({ error: err });
 });
 
-module.exports = app;
+module.exports = { app, server };
