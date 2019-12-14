@@ -4,6 +4,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         }
+    },
+    {
+        underscored: true
     });
     Tag.associate = ({Pet}) => {
         Tag.belongsToMany(Pet, {through: "pet_tag"})

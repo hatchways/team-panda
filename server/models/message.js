@@ -9,14 +9,16 @@ module.exports = (sequelize, DataTypes) => {
             },
             text: {
                 type: DataTypes.TEXT
-            },
+            }
+        },
+        {
+            underscored: true
         }
     );
 
-    Message.associate = function(models){
-        Message.belongsTo(models.User, {as: "from"});
-    }
+    Message.associate = function(models) {
+        Message.belongsTo(models.User, { as: "from" });
+    };
 
     return Message;
 };
-
