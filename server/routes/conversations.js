@@ -5,7 +5,7 @@ const models = require("../models").default;
 module.exports.userConversations = auth => {
     router.get(
         "/",
-        auth.authenticate("jwt-param-id", { sessions: false }),
+        auth.authenticate("jwt-param-id", { session: false }),
         (req, res, next) => {
             let conversationMessages = {};
             req.user
@@ -17,17 +17,19 @@ module.exports.userConversations = auth => {
                         conversationIds.push(conversation.id);
                         messagePromises.push(conversation.getMessages());
                     }
-                    Promise.all(promises).then(conversationMessagesList => {
-                        for (
-                            let i = 0;
-                            i < conversationMessagesList.length;
-                            i++
-                        ) {
-                            conversationMessages[conversationIds[i]] =
-                                conversationMessagesList[i];
+                    Promise.all(messagePromises).then(
+                        conversationMessagesList => {
+                            for (
+                                let i = 0;
+                                i < conversationMessagesList.length;
+                                i++
+                            ) {
+                                conversationMessages[conversationIds[i]] =
+                                    conversationMessagesList[i];
+                            }
+                            res.send(conversationMessages);
                         }
-                    });
-                    res.send(conversationMessages);
+                    );
                 })
                 .catch(next);
         }
