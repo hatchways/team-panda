@@ -7,14 +7,18 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 autoIncrement: true
             }
+        },
+        {
+            underscored: true
         }
     );
 
     Conversation.associate = function(models) {
         Conversation.hasMany(models.Message);
-        Conversation.belongsToMany(models.User, {through: "user_conversation"});
+        Conversation.belongsToMany(models.User, {
+            through: "user_conversation"
+        });
     };
 
     return Conversation;
 };
-

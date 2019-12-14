@@ -50,6 +50,7 @@ const user = (sequelize, DataTypes) => {
             }
         },
         {
+            underscored: true,
             defaultScope: {
                 attributes: { exclude: ["currentPassword"] }
             },
@@ -76,10 +77,11 @@ const user = (sequelize, DataTypes) => {
             foreignKey: "id"
         });
 
-        User.belongsToMany(models.Conversation, {through: "user_conversation"});
+        User.belongsToMany(models.Conversation, {
+            through: "user_conversation"
+        });
 
-        User.belongsToMany(models.Message, {through: models.UserMessage});
-
+        User.belongsToMany(models.Message, { through: models.UserMessage });
     };
     return User;
 };
