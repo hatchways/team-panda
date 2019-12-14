@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const models = require("../models").default;
+const sequelize = require("sequelize");
+const Op = sequelize.Op;
 
 module.exports = auth => {
     router.get(
@@ -16,7 +18,9 @@ module.exports = auth => {
             model
                 .findAll({
                     where: {
-                        name: req.query["search"]
+                        name: {
+                            [Op.iLike]: `%${req.query["search"]}%`
+                        }
                     }
                 })
                 .then(matchedModels => {
