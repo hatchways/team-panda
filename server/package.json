@@ -34,7 +34,7 @@
         "@babel/register": "^7.5.5",
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
-        "mocha": "^6.2.0",
+        "mocha": "^10.2.0",
         "mockery": "^2.1.0",
         "sequelize-mock": "^0.10.2",
         "sequelize-test-helpers": "^1.1.2",
